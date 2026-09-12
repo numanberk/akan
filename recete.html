@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reçetenizdeki sayılar ne anlama geliyor — Akan Optik</title>
+<meta name="description" content="SPH, CYL, AXIS, ADD ve PD değerleri ne demek? Gözlük reçetenizi sade Türkçe okuyun. Akan Optik, Osmangazi Bursa.">
+<link rel="canonical" href="https://www.akanoptik.com.tr/recete.html">
+<meta property="og:title" content="Reçetenizdeki sayılar ne anlama geliyor — Akan Optik">
+<meta property="og:description" content="SPH, CYL, AXIS, ADD ve PD değerleri ne demek? Gözlük reçetenizi sade Türkçe okuyun. Akan Optik, Osmangazi Bursa.">
+<meta property="og:locale" content="tr_TR">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="index.html">AKAN OPTİK</a>
+    <nav class="topnav" aria-label="Ana menü"><a href="randevu.html">Randevu</a><a href="recete.html" aria-current=page>Reçeteniz</a><a href="cerceve-bulucu.html">Çerçeve bulucu</a><a href="cerceveler.html">Çerçeveler</a><a href="onarim.html">Onarım</a><a href="iletisim.html">İletişim</a></nav>
+    <a class="callbtn" href="tel:+902242211219">0224 221 12 19</a>
+  </div>
+</header>
+<div class="pagehead">
+  <div class="wrap">
+    <div class="crumb"><a href="index.html">Akan Optik</a> &nbsp;/&nbsp; Reçeteniz</div>
+    <h1>Reçetenizdeki sayılar ne anlama geliyor</h1>
+    <p class="lede">Doktorunuzun yazdığı değerleri girin, her satırın karşılığını sade Türkçe açıklayalım. Bu araç bilgilendirme amaçlıdır; ölçüm yapmaz, teşhis koymaz ve reçetenizin yerini tutmaz.</p>
+  </div>
+</div>
+<main><section class="block">
+  <div class="wrap split">
+    <div class="panel">
+      <table class="rxtable">
+        <thead><tr><th></th><th>SPH</th><th>CYL</th><th>AXIS</th></tr></thead>
+        <tbody>
+          <tr><td>Sağ</td>
+            <td><input type="text" id="r_sph" inputmode="decimal" placeholder="-1.25" aria-label="Sağ göz SPH"></td>
+            <td><input type="text" id="r_cyl" inputmode="decimal" placeholder="-0.75" aria-label="Sağ göz CYL"></td>
+            <td><input type="text" id="r_ax"  inputmode="numeric" placeholder="180" aria-label="Sağ göz AXIS"></td></tr>
+          <tr><td>Sol</td>
+            <td><input type="text" id="l_sph" inputmode="decimal" placeholder="-1.00" aria-label="Sol göz SPH"></td>
+            <td><input type="text" id="l_cyl" inputmode="decimal" placeholder="0" aria-label="Sol göz CYL"></td>
+            <td><input type="text" id="l_ax"  inputmode="numeric" placeholder="" aria-label="Sol göz AXIS"></td></tr>
+        </tbody>
+      </table>
+      <div class="grid2">
+        <label class="field"><span>ADD (yakın ilavesi)</span><input type="text" id="rx_add" inputmode="decimal" placeholder="+2.00"></label>
+        <label class="field"><span>PD (göz bebeği mesafesi)</span><input type="text" id="rx_pd" inputmode="numeric" placeholder="63"></label>
+      </div>
+      <div class="btnrow">
+        <button type="button" class="btn" id="rx_go">Açıkla</button>
+        <button type="button" class="btn ghost" id="rx_clear">Temizle</button>
+      </div>
+    </div>
+    <div>
+      <div class="out" id="rxOut"><p class="empty">Değerleri girip “Açıkla” düğmesine basın. Açıklama burada görünecek.</p></div>
+      <div class="gloss">
+        <dl>
+          <dt>SPH</dt><dd>Uzağı görmeye ilişkin küresel numara. Eksi değer miyop, artı değer hipermetrop anlamına gelir.</dd>
+          <dt>CYL</dt><dd>Astigmat numarası. Boş veya sıfırsa astigmat düzeltmesi yoktur.</dd>
+          <dt>AXIS</dt><dd>Astigmatın 1 ile 180 derece arasındaki ekseni. CYL varsa mutlaka bulunur.</dd>
+          <dt>ADD</dt><dd>Yakını görmek için eklenen değer. Genellikle progresif veya bifokal camlarda yer alır.</dd>
+          <dt>PD</dt><dd>İki göz bebeği arasındaki milimetre cinsinden mesafe. Camın merkezlenmesi için gerekir.</dd>
+          <dt>OD / OS</dt><dd>Bazı reçetelerde sağ göz OD, sol göz OS olarak yazılır.</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block tight">
+  <div class="wrap">
+    <h2>Sık sorulanlar</h2>
+    <div class="split" style="margin-top:18px">
+      <div>
+        <h3>Reçetem ne kadar geçerli</h3>
+        <p>Geçerlilik süresi hekimin değerlendirmesine bağlıdır. Uzun süre geçmişse numaranın güncelliğini yeniden kontrol ettirmeniz gerekir.</p>
+        <h3 style="margin-top:20px">Eski gözlüğümden numara okunur mu</h3>
+        <p>Camdan mevcut numara ölçülebilir. Bu, hangi numarayı kullandığınızı gösterir; numaranızın bugün ne olması gerektiğini göstermez.</p>
+      </div>
+      <div>
+        <h3>Sağ ve sol numaram çok farklı</h3>
+        <p>Belirgin fark varsa cam kalınlığı ve incelik oranı seçimi önem kazanır. Uygun indeksi mağazada birlikte belirliyoruz.</p>
+        <h3 style="margin-top:20px">PD ölçüsünü kendim ölçebilir miyim</h3>
+        <p>Yaklaşık değer bulunabilir, ama camın merkezlenmesi milimetre hassasiyeti ister. Ölçümü mağazada yapıyoruz.</p>
+      </div>
+    </div>
+    <p class="note" style="margin-top:24px">Numaranızın değişip değişmediği yalnızca hekim muayenesiyle anlaşılır. Mağazamız hekim reçetesine göre cam ve çerçeve hazırlar.</p>
+  </div>
+</section></main>
+<footer class="foot">
+  <div class="wrap">
+    <div class="footgrid">
+      <div>
+        <h3>Akan Optik</h3>
+        <p>Kayıhan, Atatürk Caddesi No:12<br>16230 Osmangazi / Bursa</p>
+        <p><a href="tel:+902242211219">0224 221 12 19</a></p>
+        <p><a href="https://www.google.com/maps/search/?api=1&amp;query=Akan+Optik+Atat%C3%BCrk+Caddesi+No:12+Kay%C4%B1han+Osmangazi+Bursa" target="_blank" rel="noopener">Yol tarifi al</a></p>
+      </div>
+      <div>
+        <h3>Çalışma saatleri</h3>
+        <ul class="hours" id="hoursList"></ul>
+      </div>
+      <div>
+        <h3>Sayfalar</h3>
+        <ul class="footnav">
+          <li><a href="randevu.html">Randevu</a></li>
+          <li><a href="recete.html">Reçetenizi anlayın</a></li>
+          <li><a href="cerceve-bulucu.html">Çerçeve bulucu</a></li>
+          <li><a href="cerceveler.html">Çerçeveler</a></li>
+          <li><a href="onarim.html">Onarım</a></li>
+          <li><a href="iletisim.html">İletişim ve konum</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="legal">
+      <p style="max-width:80ch">Bu sitedeki formlar tarayıcınızda çalışır; girdiğiniz bilgiler sunucumuzda saklanmaz ve yalnızca sizin göndereceğiniz mesajın taslağını oluşturur. Reçete ve numara bilgileriniz yalnızca mağaza içindeki kayıt sisteminde, sır saklama yükümlülüğü altında tutulur ve tanıtım amacıyla kullanılmaz. Ayrıntılı aydınlatma metnimiz mağazamızda yazılı olarak bulunmaktadır.</p>
+      <p style="margin-top:12px">Akan Optik &middot; Kayıhan, Atatürk Caddesi No:12, 16230 Osmangazi / Bursa &middot; <a href="tel:+902242211219">0224 221 12 19</a></p>
+    </div>
+  </div>
+</footer>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="assets/site.js"></script>
+</body>
+</html>

@@ -216,6 +216,25 @@ textarea{min-height:88px;resize:vertical}
   font-family:"Archivo";font-size:14px;padding:11px 18px;border-radius:var(--r);z-index:60;opacity:0;pointer-events:none;transition:opacity .2s}
 .toast.on{opacity:1}
 
+/* ---------- stok tablosu (lensler) ---------- */
+.stoktab{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line)}
+.stoktab th{font-family:"Archivo";font-size:12.5px;font-weight:600;color:var(--muted);
+  text-align:left;padding:12px 14px;border-bottom:1px solid var(--line)}
+.stoktab td{padding:13px 14px;border-bottom:1px solid var(--line-soft);font-size:15px;vertical-align:middle}
+.stoktab tr:last-child td{border-bottom:0}
+.stoktab td b{font-family:"Archivo";font-weight:600;font-size:15px}
+.stoktab td small{display:block;color:var(--muted);font-size:13px;margin-top:2px}
+.stoktab td.ok{font-family:"Archivo";font-size:13.5px;font-weight:600;color:var(--navy)}
+.stoktab td.no{font-family:"Archivo";font-size:13.5px;font-weight:600;color:var(--muted)}
+.btn.small{padding:7px 14px;font-size:13.5px}
+@media(max-width:760px){
+  .stoktab thead{display:none}
+  .stoktab tr{display:block;border-bottom:1px solid var(--line);padding:12px 0}
+  .stoktab td{display:flex;justify-content:space-between;gap:14px;border:0;padding:4px 14px}
+  .stoktab td:before{content:attr(data-l);font-family:"Archivo";font-size:13px;color:var(--muted)}
+}
+.frame img{width:100%;height:120px;object-fit:contain;display:block;margin:2px 0 12px;background:#fff}
+
 </style>
 
 </head>
@@ -223,7 +242,7 @@ textarea{min-height:88px;resize:vertical}
 <header class="topbar">
   <div class="wrap">
     <a class="brand" href="index.html">AKAN OPTİK</a>
-    <nav class="topnav" aria-label="Ana menü"><a href="randevu.html">Randevu</a><a href="recete.html" aria-current=page>Reçeteniz</a><a href="cerceve-bulucu.html">Çerçeve bulucu</a><a href="cerceveler.html">Çerçeveler</a><a href="onarim.html">Onarım</a><a href="iletisim.html">İletişim</a></nav>
+    <nav class="topnav" aria-label="Ana menü"><a href="randevu.html">Randevu</a><a href="recete.html" aria-current=page>Reçeteniz</a><a href="cerceve-bulucu.html">Çerçeve bulucu</a><a href="cerceveler.html">Çerçeveler</a><a href="lensler.html">Lensler</a><a href="onarim.html">Onarım</a><a href="iletisim.html">İletişim</a></nav>
     <a class="callbtn" href="tel:+902242211219">0224 221 12 19</a>
   </div>
 </header>
@@ -315,6 +334,7 @@ textarea{min-height:88px;resize:vertical}
           <li><a href="recete.html">Reçetenizi anlayın</a></li>
           <li><a href="cerceve-bulucu.html">Çerçeve bulucu</a></li>
           <li><a href="cerceveler.html">Çerçeveler</a></li>
+          <li><a href="lensler.html">Kontakt lens stoğu</a></li>
           <li><a href="onarim.html">Onarım</a></li>
           <li><a href="iletisim.html">İletişim ve konum</a></li>
         </ul>
@@ -336,6 +356,10 @@ const CONFIG = {
   // Boş bırakılırsa butonlar mesajı panoya kopyalar.
   whatsapp: "",
   tel: "+902242211219",
+  // Stok uygulamasının adresi. Worker'ı yayına aldıktan sonra buraya yazın.
+  // Örnek: "https://akan-stok.hesabiniz.workers.dev/api/stok"
+  // Boş bırakılırsa aynı klasördeki stok.json, o da yoksa örnek liste kullanılır.
+  stokUrl: "https://akan-stok.mustafa16-eyupoglu.workers.dev/api/stok",
   // Çalışma saatleri. 0 = Pazar, 1 = Pazartesi ... Kapalı gün için null.
   // Google işletme profilinizdeki saatlerle birebir aynı olmalı.
   hours: {
@@ -348,10 +372,12 @@ const DAYS = ["Pazar","Pazartesi","Salı","Çarşamba","Perşembe","Cuma","Cumar
 const $  = s => document.querySelector(s);
 const $$ = s => Array.from(document.querySelectorAll(s));
 const v  = id => ($(id)?.value || "").trim();
+const esc = s => String(s==null?"":s).replace(/[&<>"']/g, c =>
+  ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 
 function toast(msg){
   let t = $("#toast");
-  if(!t){ t = document.createElement("div"); t.id="toast"; t.className="toast"; t.setAttribute("role","status"); document.body.appendChild(t); }
+  if(!t){ t=document.createElement("div"); t.id="toast"; t.className="toast"; t.setAttribute("role","status"); document.body.appendChild(t); }
   t.textContent = msg; t.classList.add("on");
   clearTimeout(t._t); t._t = setTimeout(()=>t.classList.remove("on"), 2600);
 }
@@ -373,10 +399,10 @@ function send(text){
 /* ---------- çalışma saatleri ---------- */
 const toMin = h => { const [a,b]=h.split(":").map(Number); return a*60+b; };
 function openState(){
-  const el = $("#openState"); if(!el) return;
+  const el=$("#openState"); if(!el) return;
   const now=new Date(), h=CONFIG.hours[now.getDay()], m=now.getHours()*60+now.getMinutes();
   if(!h){ el.innerHTML='<span class="dot shut"></span>Bugün kapalı'; return; }
-  el.innerHTML = (m>=toMin(h[0]) && m<toMin(h[1]))
+  el.innerHTML=(m>=toMin(h[0])&&m<toMin(h[1]))
     ? '<span class="dot"></span>Açık, '+h[1]+'’a kadar'
     : '<span class="dot shut"></span>Kapalı, '+h[0]+'’da açılır';
 }
@@ -390,13 +416,13 @@ function hoursList(){
 }
 openState(); hoursList();
 
-/* ---------- çerçeve çizimleri ---------- */
+/* ---------- çerçeve çizimleri (görsel yoksa) ---------- */
 function glassesSVG(shape){
   const S={dikdortgen:{rx:3,w:64,h:34},kare:{rx:5,w:60,h:46},yuvarlak:{rx:30,w:56,h:56},
     oval:{rx:26,w:66,h:40},panto:{rx:22,w:58,h:50},kelebek:{rx:10,w:66,h:38},aviator:{rx:18,w:64,h:46}
   }[shape]||{rx:4,w:64,h:36};
   const cy=50,gap=22,lx=100-gap/2-S.w,rx0=100+gap/2,y=cy-S.h/2;
-  return `<svg viewBox="0 0 200 100" role="img" aria-label="${shape} çerçeve çizimi" fill="none"
+  return `<svg viewBox="0 0 200 100" role="img" aria-label="çerçeve çizimi" fill="none"
     stroke="#101A2B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
     <rect x="${lx}" y="${y}" width="${S.w}" height="${S.h}" rx="${S.rx}"/>
     <rect x="${rx0}" y="${y}" width="${S.w}" height="${S.h}" rx="${S.rx}"/>
@@ -405,17 +431,48 @@ function glassesSVG(shape){
     <path d="M${rx0+S.w} ${cy-6} l 16 -5"/></svg>`;
 }
 
-/* ---------- çerçeve verisi ---------- */
-const FRAMES=[
-  {code:"AK-101",shape:"dikdortgen",material:"Asetat",  color:"Bağa deseni", use:"Günlük",who:"Unisex",stock:true},
-  {code:"AK-104",shape:"yuvarlak",  material:"Metal",   color:"Antik altın", use:"Günlük",who:"Unisex",stock:true},
-  {code:"AK-108",shape:"kelebek",   material:"Asetat",  color:"Füme",        use:"Günlük",who:"Kadın", stock:true},
-  {code:"AK-112",shape:"kare",      material:"Asetat",  color:"Mat siyah",   use:"Ekran", who:"Erkek", stock:true},
-  {code:"AK-117",shape:"aviator",   material:"Metal",   color:"Gümüş",       use:"Güneş", who:"Unisex",stock:true},
-  {code:"AK-121",shape:"panto",     material:"Titanyum",color:"Lacivert",    use:"Günlük",who:"Unisex",stock:false},
-  {code:"AK-126",shape:"oval",      material:"Titanyum",color:"Şampanya",    use:"Okuma", who:"Kadın", stock:true},
-  {code:"AK-130",shape:"dikdortgen",material:"TR90",    color:"Kiremit",     use:"Çocuk", who:"Çocuk", stock:true}
+/* =========================================================
+   STOK VERİSİ
+   Personel panelinden indirilen stok.json varsa oradan okunur.
+   Yoksa aşağıdaki örnek liste kullanılır.
+   ========================================================= */
+let FRAMES=[
+  {kod:"AK-101",tip:"dikdortgen",malzeme:"Asetat",  renk:"Bağa deseni", kullanim:"Günlük",kime:"Unisex",adet:2,gorsel:""},
+  {kod:"AK-104",tip:"yuvarlak",  malzeme:"Metal",   renk:"Antik altın", kullanim:"Günlük",kime:"Unisex",adet:1,gorsel:""},
+  {kod:"AK-108",tip:"kelebek",   malzeme:"Asetat",  renk:"Füme",        kullanim:"Günlük",kime:"Kadın", adet:3,gorsel:""},
+  {kod:"AK-112",tip:"kare",      malzeme:"Asetat",  renk:"Mat siyah",   kullanim:"Ekran", kime:"Erkek", adet:2,gorsel:""},
+  {kod:"AK-117",tip:"aviator",   malzeme:"Metal",   renk:"Gümüş",       kullanim:"Güneş", kime:"Unisex",adet:1,gorsel:""},
+  {kod:"AK-121",tip:"panto",     malzeme:"Titanyum",renk:"Lacivert",    kullanim:"Günlük",kime:"Unisex",adet:0,gorsel:""},
+  {kod:"AK-126",tip:"oval",      malzeme:"Titanyum",renk:"Şampanya",    kullanim:"Okuma", kime:"Kadın", adet:2,gorsel:""},
+  {kod:"AK-130",tip:"dikdortgen",malzeme:"TR90",    renk:"Kiremit",     kullanim:"Çocuk", kime:"Çocuk", adet:4,gorsel:""}
 ];
+let LENSES=[
+  {kod:"LN-01",tur:"Günlük",       paket:"30 adet", ozellik:"Küresel",    aralik:"-0.50 / -6.00",adet:12,not:""},
+  {kod:"LN-02",tur:"Aylık",        paket:"6 adet",  ozellik:"Küresel",    aralik:"-0.75 / -8.00",adet:8, not:""},
+  {kod:"LN-03",tur:"Aylık",        paket:"6 adet",  ozellik:"Torik",      aralik:"-1.00 / -6.00",adet:4, not:"Astigmat için"},
+  {kod:"LN-04",tur:"Aylık",        paket:"6 adet",  ozellik:"Multifokal", aralik:"-1.00 / -5.00",adet:0, not:"Yakın ilaveli"},
+  {kod:"LN-05",tur:"Günlük",       paket:"30 adet", ozellik:"Torik",      aralik:"-0.75 / -5.00",adet:5, not:""},
+  {kod:"LN-06",tur:"Lens solüsyonu",paket:"360 ml", ozellik:"Çok amaçlı", aralik:"—",           adet:9, not:""}
+];
+
+let stockLoaded = null;
+async function loadStock(){
+  if(stockLoaded) return stockLoaded;
+  stockLoaded = (async ()=>{
+    const kaynaklar = [CONFIG.stokUrl, "stok.json"].filter(Boolean);
+    for(const url of kaynaklar){
+      try{
+        const r = await fetch(url, {cache:"no-store"});
+        if(!r.ok) continue;
+        const d = await r.json();
+        if(Array.isArray(d.cerceveler) && d.cerceveler.length) FRAMES = d.cerceveler;
+        if(Array.isArray(d.lensler)    && d.lensler.length)    LENSES = d.lensler;
+        return;
+      }catch(e){ /* sıradaki kaynağı dene */ }
+    }
+  })();
+  return stockLoaded;
+}
 
 /* ---------- randevu formu ---------- */
 if($("#ap_wa")){
@@ -476,32 +533,67 @@ if($("#rx_go")){
   });
 }
 
+/* ---------- ayırtma mesajları ---------- */
+function reserveFrame(kod){
+  const f=FRAMES.find(x=>x.kod===kod); if(!f) return;
+  const who=prompt("Adınız ve telefon numaranız:"); if(!who) return;
+  send(["Çerçeve ayırtma talebi — Akan Optik",
+    "Model: "+f.kod+" ("+f.malzeme+", "+f.renk+")",
+    "İleten: "+who,"İki gün ayrılmasını rica ediyorum."].join("\n"));
+}
+function reserveLens(kod){
+  const l=LENSES.find(x=>x.kod===kod); if(!l) return;
+  const who=prompt("Adınız ve telefon numaranız:"); if(!who) return;
+  send(["Lens ayırtma talebi — Akan Optik",
+    "Ürün: "+l.kod+" — "+l.tur+", "+l.ozellik+", "+l.paket,
+    "İleten: "+who,
+    "Numaramı mağazada reçetemle birlikte vereceğim.",
+    "İki gün ayrılmasını rica ediyorum."].join("\n"));
+}
+
 /* ---------- çerçeve kataloğu ---------- */
 if($("#frames")){
   const FILTERS=["Tümü","Günlük","Ekran","Okuma","Güneş","Çocuk"];
   let active="Tümü";
   function drawFilters(){
     $("#filters").innerHTML=FILTERS.map(f=>`<button class="chip" data-f="${f}" aria-pressed="${f===active}">${f}</button>`).join("");
-    $$("#filters .chip").forEach(b=>b.addEventListener("click",()=>{active=b.dataset.f;drawFilters();draw();}));
+    $$("#filters .chip").forEach(b=>b.addEventListener("click",()=>{active=b.dataset.f;drawFilters();drawFrames();}));
   }
-  function draw(){
-    const list=FRAMES.filter(f=>active==="Tümü"||f.use===active);
-    $("#frames").innerHTML=list.map(f=>`
-      <article class="frame">${glassesSVG(f.shape)}
-        <div class="code">${f.code}</div>
-        <div class="meta">${f.material} &middot; ${f.color}<br>${f.who} &middot; ${f.use}</div>
-        <div class="stock${f.stock?"":" no"}">${f.stock?"Mağazada mevcut":"Şu an yok, sorabilirsiniz"}</div>
-        <button class="btn ghost" data-reserve="${f.code}">Bu modeli ayırt</button>
-      </article>`).join("");
-    $$("[data-reserve]").forEach(b=>b.addEventListener("click",()=>{
-      const f=FRAMES.find(x=>x.code===b.dataset.reserve);
-      const who=prompt("Adınız ve telefon numaranız:");
-      if(!who) return;
-      send(["Çerçeve ayırtma talebi — Akan Optik","Model: "+f.code+" ("+f.material+", "+f.color+")",
-        "İleten: "+who,"İki gün ayrılmasını rica ediyorum."].join("\n"));
-    }));
+  function drawFrames(){
+    const list=FRAMES.filter(f=>active==="Tümü"||f.kullanim===active);
+    if(!list.length){ $("#frames").innerHTML='<p class="note">Bu başlıkta şu an ürün görünmüyor.</p>'; return; }
+    $("#frames").innerHTML=list.map(f=>{
+      const varMi=(f.adet==null? true : Number(f.adet)>0);
+      const gorsel=f.gorsel ? `<img src="${esc(f.gorsel)}" alt="${esc(f.kod)} çerçeve" loading="lazy">` : glassesSVG(f.tip);
+      return `<article class="frame">${gorsel}
+        <div class="code">${esc(f.kod)}</div>
+        <div class="meta">${esc(f.malzeme)} &middot; ${esc(f.renk)}<br>${esc(f.kime)} &middot; ${esc(f.kullanim)}</div>
+        <div class="stock${varMi?"":" no"}">${varMi?"Mağazada mevcut":"Şu an yok, sorabilirsiniz"}</div>
+        <button class="btn ghost" data-frame="${esc(f.kod)}">Bu modeli ayırt</button>
+      </article>`;
+    }).join("");
+    $$("[data-frame]").forEach(b=>b.addEventListener("click",()=>reserveFrame(b.dataset.frame)));
   }
-  drawFilters(); draw();
+  loadStock().then(()=>{ drawFilters(); drawFrames(); });
+}
+
+/* ---------- lens stoğu ---------- */
+if($("#lenses")){
+  function drawLenses(){
+    if(!LENSES.length){ $("#lenses").innerHTML='<p class="note">Lens listesi henüz yüklenmedi.</p>'; return; }
+    $("#lenses").innerHTML=`<table class="stoktab">
+      <thead><tr><th>Ürün</th><th>Tür</th><th>Özellik</th><th>Paket</th><th>Numara aralığı</th><th>Durum</th><th></th></tr></thead>
+      <tbody>${LENSES.map(l=>{
+        const varMi=Number(l.adet)>0;
+        return `<tr>
+          <td><b>${esc(l.kod)}</b>${l.not?`<small>${esc(l.not)}</small>`:""}</td>
+          <td>${esc(l.tur)}</td><td>${esc(l.ozellik)}</td><td>${esc(l.paket)}</td><td>${esc(l.aralik)}</td>
+          <td class="${varMi?"ok":"no"}">${varMi?"Stokta":"Tükendi"}</td>
+          <td>${varMi?`<button class="btn ghost small" data-lens="${esc(l.kod)}">Ayırt</button>`:`<span class="note">Sorabilirsiniz</span>`}</td>
+        </tr>`;}).join("")}</tbody></table>`;
+    $$("[data-lens]").forEach(b=>b.addEventListener("click",()=>reserveLens(b.dataset.lens)));
+  }
+  loadStock().then(drawLenses);
 }
 
 /* ---------- çerçeve bulucu ---------- */
@@ -529,7 +621,6 @@ if($("#quiz")){
   ];
   const shell='<div class="qstep" id="qStep"></div><h3 id="qTitle"></h3><div class="opts" id="qOpts"></div><div class="qbar"><i id="qBar"></i></div>';
   let qi=0, answers={};
-
   function step(){
     const s=QUIZ[qi];
     $("#qStep").textContent="Soru "+(qi+1)+" / "+QUIZ.length;
@@ -537,8 +628,7 @@ if($("#quiz")){
     $("#qOpts").innerHTML=s.a.map((o,i)=>`<button class="opt" data-i="${i}">${o.t}<small>${o.s}</small></button>`).join("");
     $("#qBar").style.width=(qi/QUIZ.length*100)+"%";
     $$("#qOpts .opt").forEach(b=>b.addEventListener("click",()=>{
-      answers[s.k]=s.a[+b.dataset.i].v; qi++;
-      qi<QUIZ.length ? step() : result();
+      answers[s.k]=s.a[+b.dataset.i].v; qi++; qi<QUIZ.length?step():result();
     }));
   }
   function result(){
@@ -557,7 +647,7 @@ if($("#quiz")){
             ["panto","Yuvarlağa yakın alt hat alnın genişliğini dengeler."],
             ["yuvarlak","Yumuşak daire biçimi sivri çene hattını dengeler."]]
     }[face]||[];
-    const mats = weight==="hafif" ? ["Titanyum","TR90"] : weight==="saglam" ? ["Asetat","TR90"] : ["Asetat","Metal"];
+    const mats = weight==="hafif"?["Titanyum","TR90"]:weight==="saglam"?["Asetat","TR90"]:["Asetat","Metal"];
     const styleNote={ince:"İnce metal veya çerçevesiz montaj tercih edin.",
       kalin:"Kalın asetat, yüzde net bir çizgi bırakır.",
       klasik:"Bağa deseni ve antik altın gibi zamansız renkler uygun olur.",
@@ -566,8 +656,7 @@ if($("#quiz")){
       "Ekran":"Ekran kullanımında cam kaplaması, çerçeve biçiminden daha etkilidir.",
       "Okuma":"Okuma için biraz daha alçak ve hafif çerçeveler rahat olur.",
       "Güneş":"Güneş için yüzü saran, biraz daha büyük kesimler tercih edilir."}[use];
-    const stock=FRAMES.filter(f=>(f.use===use||use==="Günlük")&&mats.includes(f.material)).slice(0,3);
-
+    const stok=FRAMES.filter(f=>(f.kullanim===use||use==="Günlük")&&mats.includes(f.malzeme)).slice(0,3);
     $("#qBar").style.width="100%";
     $("#qStep").textContent="Sonuç";
     $("#qTitle").textContent="Denemeye buradan başlayın";
@@ -580,14 +669,14 @@ if($("#quiz")){
             <div class="meta">${why}</div></article>`).join("")}
         </div>
         <p style="margin-top:20px">Malzeme olarak ${mats.join(" veya ")} öneriyoruz. ${styleNote} ${useNote}</p>
-        ${stock.length?`<p>Mağazada şu an bulunan yakın modeller: ${stock.map(s=>s.code).join(", ")}.</p>`:""}
+        ${stok.length?`<p>Mağazada şu an bulunan yakın modeller: ${stok.map(s=>esc(s.kod)).join(", ")}.</p>`:""}
         <p class="note">Bu öneri genel yüz oranlarına dayanır. Çerçeve seçimi denemeden tamamlanmaz; birkaç modeli birlikte deneyebiliriz.</p>
         <div class="btnrow"><a class="btn" href="randevu.html">Randevu oluştur</a>
         <button class="btn ghost" id="qReset">Baştan başla</button></div>
       </div>`);
     $("#qReset").addEventListener("click",()=>{ qi=0; answers={}; $("#quiz").innerHTML=shell; step(); });
   }
-  $("#quiz").innerHTML=shell; step();
+  loadStock().then(()=>{ $("#quiz").innerHTML=shell; step(); });
 }
 
 /* ---------- onarım formu ---------- */

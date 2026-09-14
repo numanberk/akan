@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>İletişim ve konum — Akan Optik, Kayıhan Osmangazi Bursa</title>
 <meta name="description" content="Akan Optik adres, telefon, çalışma saatleri ve harita. Kayıhan, Atatürk Caddesi No:12, 16230 Osmangazi Bursa.">
-<link rel="canonical" href="https://www.akanoptik.com.tr/iletisim.html">
+<link rel="canonical" href="https://akanoptik.pages.dev/iletisim.html">
 <meta property="og:title" content="İletişim ve konum — Akan Optik, Kayıhan Osmangazi Bursa">
 <meta property="og:description" content="Akan Optik adres, telefon, çalışma saatleri ve harita. Kayıhan, Atatürk Caddesi No:12, 16230 Osmangazi Bursa.">
 <meta property="og:locale" content="tr_TR">
@@ -62,9 +62,9 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .topbar{position:sticky;top:0;z-index:40;background:var(--navy-deep);color:#E3E9F0;border-bottom:1px solid rgba(255,255,255,.1)}
 .topbar .wrap{display:flex;align-items:center;gap:18px;height:58px}
 .brand{font-family:"Archivo";font-weight:800;letter-spacing:.05em;font-size:16px;color:#fff;text-decoration:none;white-space:nowrap}
-.topnav{display:flex;gap:17px;margin-left:auto;overflow-x:auto;scrollbar-width:none}
+.topnav{display:flex;gap:14px;margin-left:auto;overflow-x:auto;scrollbar-width:none}
 .topnav::-webkit-scrollbar{display:none}
-.topnav a{font-size:13.5px;font-weight:500;color:#BCCADB;text-decoration:none;white-space:nowrap;padding:5px 0;border-bottom:2px solid transparent}
+.topnav a{font-size:13px;font-weight:500;color:#BCCADB;text-decoration:none;white-space:nowrap;padding:5px 0;border-bottom:2px solid transparent}
 .topnav a:hover{color:#fff}
 .topnav a[aria-current=page]{color:#fff;border-bottom-color:var(--copper)}
 .callbtn{margin-left:4px;background:var(--copper);color:#fff;text-decoration:none;font-family:"Archivo";font-weight:600;font-size:13.5px;padding:8px 14px;border-radius:var(--r);white-space:nowrap}
@@ -313,11 +313,37 @@ textarea{min-height:88px;resize:vertical}
 .oneriler dd{margin:0}
 @media(max-width:600px){.oneriler dl{grid-template-columns:1fr;gap:2px}.oneriler dd{margin-bottom:12px}}
 
+/* ---------- kısa sözlük kartı ---------- */
+.kisaliste{margin:0;display:grid;grid-template-columns:64px 1fr;gap:12px 18px;font-size:16px}
+.kisaliste dt{font-family:"Archivo";font-weight:700;font-size:14px;color:var(--navy);
+  border-right:1px solid var(--line-soft);padding-right:14px}
+.kisaliste dd{margin:0;color:var(--muted)}
+
+/* ---------- markalar ---------- */
+.markalar{padding-top:8px}
+.markagrid{display:grid;grid-template-columns:1.6fr 1fr 1fr;gap:1px;background:var(--line-soft);border:1px solid var(--line)}
+@media(max-width:700px){.markagrid{grid-template-columns:1fr}}
+.markagrid div{background:var(--card);padding:16px 20px}
+.markagrid h4{font-family:"Archivo";font-size:12px;font-weight:600;color:var(--muted);margin:0 0 4px;letter-spacing:.02em}
+.markagrid p{font-family:"Archivo";font-size:15.5px;font-weight:600;margin:0;color:var(--ink);max-width:none}
+
 </style>
+<link rel="icon" href="favicon.ico" sizes="32x32">
+<link rel="icon" href="favicon-32.png" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta property="og:image" content="https://akanoptik.pages.dev/paylasim.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://akanoptik.pages.dev/iletisim.html">
+<meta name="twitter:card" content="summary_large_image">
+<!-- Cloudflare Web Analytics: Pages panelinden açıldığında bu satıra gerek yoktur.
+     Elle eklemek isterseniz token'ı yazıp yorumu kaldırın:
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "BURAYA_TOKEN"}'></script>
+-->
 <script type="application/ld+json">
 {
-  "@context":"https://schema.org","@type":"Optician","name":"Akan Optik & Lens",
-  "telephone":"+902242211219","url":"https://www.akanoptik.com.tr/",
+  "@context":"https://schema.org","@type":"Optician","name":"Akan Optik",
+  "telephone":"+902242211219","url":"https://akanoptik.pages.dev/",
   "address":{"@type":"PostalAddress","streetAddress":"Atatürk Caddesi No:12, Kayıhan",
     "addressLocality":"Osmangazi","addressRegion":"Bursa","postalCode":"16230","addressCountry":"TR"},
   "areaServed":["Osmangazi","Nilüfer","Yıldırım","Bursa"],
@@ -331,7 +357,7 @@ textarea{min-height:88px;resize:vertical}
 <header class="topbar">
   <div class="wrap">
     <a class="brand" href="index.html">AKAN OPTİK</a>
-    <nav class="topnav" aria-label="Ana menü"><a href="randevu.html">Randevu</a><a href="recete.html">Reçeteniz</a><a href="cerceve-bulucu.html">Çerçeve bulucu</a><a href="cerceveler.html">Çerçeveler</a><a href="lensler.html">Lensler</a><a href="onarim.html">Onarım</a><a href="sss.html">Sık sorulanlar</a><a href="iletisim.html" aria-current=page>İletişim</a></nav>
+    <nav class="topnav" aria-label="Ana menü"><a href="randevu.html">Randevu</a><a href="recete.html">Reçeteniz</a><a href="cerceve-bulucu.html">Çerçeve bulucu</a><a href="cerceveler.html">Çerçeveler</a><a href="lensler.html">Lensler</a><a href="onarim.html">Onarım</a><a href="sss.html">Sık sorulanlar</a><a href="hakkimizda.html">Hakkımızda</a><a href="iletisim.html" aria-current=page>İletişim</a></nav>
     <a class="callbtn" href="tel:+902242211219">0224 221 12 19</a>
   </div>
 </header>
@@ -350,7 +376,7 @@ textarea{min-height:88px;resize:vertical}
       <h2 style="margin-top:28px">Telefon</h2>
       <p><a href="tel:+902242211219">0224 221 12 19</a></p>
       <h2 style="margin-top:28px">Çalışma saatleri</h2>
-      <p id="openState" style="font-family:Archivo;font-size:15px"></p>
+      <p id="openState" style="font-family:Archivo;font-size:15px">Pazartesi – Cumartesi 09:00 – 18:30, Pazar kapalı</p>
       <div class="btnrow">
         <a class="btn" href="https://www.google.com/maps/search/?api=1&amp;query=Akan+Optik+Atat%C3%BCrk+Caddesi+No:12+Kay%C4%B1han+Osmangazi+Bursa" target="_blank" rel="noopener">Yol tarifi al</a>
         <a class="btn ghost" href="randevu.html">Randevu oluştur</a>
@@ -366,14 +392,22 @@ textarea{min-height:88px;resize:vertical}
   <div class="wrap">
     <div class="footgrid">
       <div>
-        <h3>Akan Optik &amp; Lens</h3>
+        <h3>Akan Optik</h3>
         <p>Kayıhan, Atatürk Caddesi No:12<br>16230 Osmangazi / Bursa</p>
         <p><a href="tel:+902242211219">0224 221 12 19</a></p>
         <p><a href="https://www.google.com/maps/search/?api=1&amp;query=Akan+Optik+Atat%C3%BCrk+Caddesi+No:12+Kay%C4%B1han+Osmangazi+Bursa" target="_blank" rel="noopener">Yol tarifi al</a></p>
       </div>
       <div>
         <h3>Çalışma saatleri</h3>
-        <ul class="hours" id="hoursList"></ul>
+        <ul class="hours" id="hoursList">
+          <li data-gun="1"><b>Pazartesi</b><span>09:00 – 18:30</span></li>
+          <li data-gun="2"><b>Salı</b><span>09:00 – 18:30</span></li>
+          <li data-gun="3"><b>Çarşamba</b><span>09:00 – 18:30</span></li>
+          <li data-gun="4"><b>Perşembe</b><span>09:00 – 18:30</span></li>
+          <li data-gun="5"><b>Cuma</b><span>09:00 – 18:30</span></li>
+          <li data-gun="6"><b>Cumartesi</b><span>09:00 – 18:30</span></li>
+          <li data-gun="0"><b>Pazar</b><span>Kapalı</span></li>
+        </ul>
       </div>
       <div>
         <h3>Sayfalar</h3>
@@ -385,13 +419,14 @@ textarea{min-height:88px;resize:vertical}
           <li><a href="lensler.html">Kontakt lens stoğu</a></li>
           <li><a href="onarim.html">Onarım</a></li>
           <li><a href="sss.html">Sık sorulan sorular</a></li>
+          <li><a href="hakkimizda.html">Hakkımızda</a></li>
           <li><a href="iletisim.html">İletişim ve konum</a></li>
         </ul>
       </div>
     </div>
     <div class="legal">
       <p style="max-width:80ch">Bu sitedeki formlar tarayıcınızda çalışır; girdiğiniz bilgiler sunucumuzda saklanmaz ve yalnızca sizin göndereceğiniz mesajın taslağını oluşturur. Reçete ve numara bilgileriniz yalnızca mağaza içindeki kayıt sisteminde, sır saklama yükümlülüğü altında tutulur ve tanıtım amacıyla kullanılmaz. Ayrıntılı aydınlatma metnimiz mağazamızda yazılı olarak bulunmaktadır.</p>
-      <p style="margin-top:12px">Akan Optik &amp; Lens &middot; Kayıhan, Atatürk Caddesi No:12, 16230 Osmangazi / Bursa &middot; <a href="tel:+902242211219">0224 221 12 19</a></p>
+      <p style="margin-top:12px">Akan Optik &middot; Kayıhan, Atatürk Caddesi No:12, 16230 Osmangazi / Bursa &middot; <a href="tel:+902242211219">0224 221 12 19</a></p>
     </div>
   </div>
 </footer>
@@ -457,11 +492,13 @@ function openState(){
 }
 function hoursList(){
   const el=$("#hoursList"); if(!el) return;
-  const today=new Date().getDay();
-  el.innerHTML=[1,2,3,4,5,6,0].map(d=>{
-    const h=CONFIG.hours[d];
-    return `<li class="${d===today?'today':''}"><b>${DAYS[d]}</b><span>${h?h[0]+" – "+h[1]:"Kapalı"}</span></li>`;
-  }).join("");
+  const today=String(new Date().getDay());
+  $$("#hoursList li").forEach(li=>{
+    const d=li.dataset.gun, h=CONFIG.hours[d];
+    li.classList.toggle("today", d===today);
+    const sp=li.querySelector("span");
+    if(sp) sp.textContent = h ? h[0]+" – "+h[1] : "Kapalı";
+  });
 }
 openState(); hoursList();
 
@@ -852,7 +889,7 @@ if($("#quiz")){
     }).join("");
 
     const ozet = [
-      "Akan Optik & Lens — çerçeve önerisi",
+      "Akan Optik — çerçeve önerisi",
       "Biçim: " + sirali.map(x=>BICIM[x]).join(", "),
       "Ölçü: " + boy,
       "Malzeme: " + mat.join(" veya "),

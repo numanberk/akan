@@ -279,6 +279,40 @@ textarea{min-height:88px;resize:vertical}
 .sssgrup{margin-bottom:38px}
 .sssgrup h2{margin-bottom:6px}
 
+/* ---------- göz görseli ve bulanıklık benzetimi ---------- */
+.gorselIki{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:22px}
+@media(max-width:820px){.gorselIki{grid-template-columns:1fr}}
+.gkutu{background:var(--card);border:1px solid var(--line);padding:18px}
+.gkutu h3{margin-bottom:4px}
+.gkutu .alt{font-size:13.5px;color:var(--muted);margin:0 0 14px}
+.gkutu svg{width:100%;height:auto;display:block}
+.simDis{overflow:hidden;background:#DCE4EC;border:1px solid var(--line-soft)}
+.simOrta{will-change:filter}
+.gozSecim{display:flex;gap:8px;margin-bottom:14px}
+.gozSecim button{font-family:"Archivo";font-size:13.5px;font-weight:600;padding:7px 15px;
+  border:1px solid var(--line);background:var(--card);border-radius:999px;cursor:pointer;color:var(--ink)}
+.gozSecim button[aria-pressed=true]{background:var(--navy);border-color:var(--navy);color:#fff}
+.odakEtiket{font-family:"Archivo";font-size:12.5px;font-weight:600}
+
+/* ---------- gelişmiş bulucu sonucu ---------- */
+.sonucUst{background:var(--navy-deep);color:#D6E2EA;padding:20px;margin-top:22px}
+.sonucUst h3{color:#fff;font-size:19px;margin:0 0 4px}
+.sonucUst p{color:#BCCADB;margin:0;font-size:15px}
+.puanlar{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}
+@media(max-width:700px){.puanlar{grid-template-columns:1fr}}
+.puan{background:var(--card);border:1px solid var(--line);padding:16px}
+.puan .sira{font-family:"Archivo";font-size:11.5px;font-weight:700;letter-spacing:.08em;color:var(--copper);margin-bottom:6px}
+.puan svg{width:100%;height:56px;margin:2px 0 10px}
+.puan b{font-family:"Archivo";font-size:16px;display:block;margin-bottom:4px}
+.puan p{font-size:14.5px;color:var(--muted);margin:0}
+.cubuk{height:4px;background:var(--paper-2);margin-top:10px}
+.cubuk i{display:block;height:4px;background:var(--navy)}
+.oneriler{border-top:1px solid var(--line-soft);margin-top:24px;padding-top:20px}
+.oneriler dl{display:grid;grid-template-columns:130px 1fr;gap:10px 18px;margin:0;font-size:15.5px}
+.oneriler dt{font-family:"Archivo";font-weight:600;font-size:14px;color:var(--muted)}
+.oneriler dd{margin:0}
+@media(max-width:600px){.oneriler dl{grid-template-columns:1fr;gap:2px}.oneriler dd{margin-bottom:12px}}
+
 </style>
 
 </head>
@@ -547,11 +581,77 @@ if($("#rx_go")){
       h+="<h4>İki göz arasındaki fark</h4><p>Sağ ve sol numaranız arasında belirgin bir fark var. Bu durumda cam kalınlığı ve incelik oranı seçimi önem kazanır. Uygun indeksi mağazada birlikte belirleyelim.</p>";
     h+='<p class="note" style="margin-top:16px">Bu açıklama reçetenizi okumanıza yardımcı olmak içindir. Numaranızın güncel olup olmadığına yalnızca hekim karar verir.</p>';
     out.innerHTML=h;
+    if(typeof gorselCiz==="function") gorselCiz();
   });
   $("#rx_clear").addEventListener("click",()=>{
     ["#r_sph","#r_cyl","#r_ax","#l_sph","#l_cyl","#l_ax","#rx_add","#rx_pd"].forEach(i=>$(i).value="");
     $("#rxOut").innerHTML='<p class="empty">Değerleri girip “Açıkla” düğmesine basın. Açıklama burada görünecek.</p>';
+    gorselCiz();
   });
+
+  /* ---------- göz kesiti ve bulanıklık benzetimi ---------- */
+  let aktifGoz = "r";
+  function sayiAl(id){ const n=Number(String(v(id)).replace(",",".")); return isNaN(n)?0:n; }
+  function gorselCiz(){
+    if(!$("#isin1")) return;
+    const sph = sayiAl(aktifGoz==="r" ? "#r_sph" : "#l_sph");
+    const cyl = sayiAl(aktifGoz==="r" ? "#r_cyl" : "#l_cyl");
+    const ax  = sayiAl(aktifGoz==="r" ? "#r_ax"  : "#l_ax") || 0;
+
+    /* --- odak noktası --- */
+    const retina = 450, korneaX = 196;
+    let fx = retina + sph * 26;                 // eksi: retina önünde, artı: arkasında
+    fx = Math.max(300, Math.min(660, fx));
+    const ciz = (y0)=>{
+      const egim = (150 - y0) / (fx - korneaX);
+      const yBit = y0 + egim * (retina - korneaX);
+      return "M60 "+y0+" L"+korneaX+" "+y0+" L"+retina+" "+yBit.toFixed(1);
+    };
+    $("#isin1").setAttribute("d", ciz(104));
+    $("#isin2").setAttribute("d", ciz(196));
+    const egim = (150-104)/(fx-korneaX);
+    const yUst = 104 + egim*(retina-korneaX);
+    const yalt = 150 + (150-yUst);
+    $("#lekeCiz").setAttribute("y1", Math.min(yUst,yalt).toFixed(1));
+    $("#lekeCiz").setAttribute("y2", Math.max(yUst,yalt).toFixed(1));
+    const gorunurFx = Math.min(fx, 470);
+    $("#odakNok").setAttribute("cx", gorunurFx);
+    $("#odakCiz").setAttribute("x1", gorunurFx); $("#odakCiz").setAttribute("x2", gorunurFx);
+    $("#odakCiz").setAttribute("y1", 60); $("#odakCiz").setAttribute("y2", 240);
+
+    let yazi;
+    if(!sph && !cyl) yazi = "Değer girilmedi";
+    else if(Math.abs(sph) < 0.25) yazi = "Işık retina üzerinde birleşiyor, uzak nettir.";
+    else if(sph < 0) yazi = "Işık retinaya varmadan birleşiyor: miyopi. Uzak bulanık görünür.";
+    else yazi = "Işık retinanın arkasında birleşecek şekilde geliyor: hipermetropi. Göz yakında zorlanır.";
+    if(cyl) yazi += " Astigmat nedeniyle bulanıklık her yönde eşit değildir.";
+    $("#odakYazi").textContent = yazi;
+
+    /* --- bulanıklık benzetimi --- */
+    const k = 2.6;
+    const temel = Math.min(14, Math.abs(sph) * k);
+    const eksen = Math.min(14, Math.abs(cyl) * k);
+    const sx = temel + eksen, sy = temel;
+    const f = $("#astigBlur");
+    if(f){
+      f.setAttribute("stdDeviation", sx.toFixed(2)+" "+sy.toFixed(2));
+      $("#simOrta").style.filter = (sx||sy) ? "url(#astigBulanik)" : "none";
+      $("#simIc").style.transform  = "rotate("+(-ax)+"deg)";
+      $("#simDis").style.transform = "rotate("+ax+"deg)";
+    }
+  }
+  function gozSec(hangi){
+    aktifGoz = hangi;
+    $("#gzSag").setAttribute("aria-pressed", hangi==="r");
+    $("#gzSol").setAttribute("aria-pressed", hangi==="l");
+    gorselCiz();
+  }
+  if($("#gzSag")){
+    $("#gzSag").addEventListener("click",()=>gozSec("r"));
+    $("#gzSol").addEventListener("click",()=>gozSec("l"));
+    gorselCiz();
+  }
+
 }
 
 /* ---------- ayırtma mesajları ---------- */
@@ -617,87 +717,185 @@ if($("#lenses")){
   loadStock().then(drawLenses);
 }
 
-/* ---------- çerçeve bulucu ---------- */
+/* ---------- çerçeve bulucu (puanlamalı) ---------- */
 if($("#quiz")){
-  const QUIZ=[
-    {q:"Yüz hatlarınızı hangisi daha iyi anlatır?",k:"face",a:[
-      {t:"Yuvarlak",s:"Yanaklar dolgun, çene yumuşak hatlı",v:"yuvarlak"},
-      {t:"Köşeli",s:"Çene ve alın belirgin, geniş çene hattı",v:"kare"},
-      {t:"Oval",s:"Alın ve çene dengeli, uzunluk fazla",v:"oval"},
-      {t:"Kalp",s:"Alın geniş, çene daralan",v:"kalp"}]},
-    {q:"Gözlüğü en çok ne için kullanacaksınız?",k:"use",a:[
-      {t:"Gün boyu",s:"Sabahtan akşama takılacak",v:"Günlük"},
-      {t:"Ekran",s:"Bilgisayar ve telefon başında",v:"Ekran"},
-      {t:"Okuma",s:"Yakın iş ve okuma için",v:"Okuma"},
-      {t:"Güneş",s:"Dışarıda, araç kullanırken",v:"Güneş"}]},
-    {q:"Nasıl bir görünüm istiyorsunuz?",k:"style",a:[
-      {t:"Fark edilmeyen",s:"İnce hatlı, yüze karışan",v:"ince"},
-      {t:"Belirgin",s:"Kalın çerçeve, net duruş",v:"kalin"},
-      {t:"Klasik",s:"Zamansız, sade biçimler",v:"klasik"},
-      {t:"Renkli",s:"Desen ve renk görünsün",v:"renkli"}]},
-    {q:"Ağırlık konusunda hassas mısınız?",k:"weight",a:[
-      {t:"Çok hafif olsun",s:"Burunda iz kalmasın istiyorum",v:"hafif"},
-      {t:"Dayanıklı olsun",s:"Sık düşürüyorum, sağlam dursun",v:"saglam"},
-      {t:"Fark etmez",s:"Görünüm daha önemli",v:"farketmez"}]}
+  const BICIM = {
+    dikdortgen:"Dikdörtgen", kare:"Kare", yuvarlak:"Yuvarlak",
+    oval:"Oval", panto:"Panto", kelebek:"Kelebek", aviator:"Aviator"
+  };
+  /* her cevap biçimlere puan ekler */
+  const SORULAR = [
+    {k:"yuz", q:"Yüz hatlarınızı hangisi daha iyi anlatır?", a:[
+      {t:"Yuvarlak", s:"Yanaklar dolgun, çene yumuşak hatlı",
+       p:{kare:3,dikdortgen:3,kelebek:2}, n:"Yumuşak yüz hatlarını köşeli bir çerçeve dengeler."},
+      {t:"Köşeli", s:"Çene ve alın belirgin, geniş çene hattı",
+       p:{yuvarlak:3,oval:3,panto:2}, n:"Belirgin çene ve alın çizgisini yuvarlak hatlar yumuşatır."},
+      {t:"Oval", s:"Alın ve çene dengeli",
+       p:{dikdortgen:2,panto:2,aviator:2,oval:2}, n:"Oval yüz çoğu biçimi taşır, seçim zevke kalır."},
+      {t:"Kalp", s:"Alın geniş, çene daralan",
+       p:{oval:3,panto:3,yuvarlak:2}, n:"Altta genişleyen yumuşak hat, dar çeneyle denge kurar."}
+    ]},
+    {k:"genislik", q:"Yüzünüzün genişliği nasıl?", a:[
+      {t:"Dar", s:"Çoğu gözlük bana büyük geliyor", p:{oval:2,yuvarlak:2,panto:1}, boy:"küçük"},
+      {t:"Orta", s:"Çoğu gözlük oturuyor", p:{}, boy:"orta"},
+      {t:"Geniş", s:"Gözlükler yanlarımı sıkıyor", p:{dikdortgen:2,kare:2,aviator:1}, boy:"büyük"}
+    ]},
+    {k:"kullanim", q:"Gözlüğü en çok ne için kullanacaksınız?", a:[
+      {t:"Gün boyu", s:"Sabahtan akşama takılacak", p:{dikdortgen:1,panto:1}, use:"Günlük"},
+      {t:"Ekran", s:"Bilgisayar ve telefon başında", p:{kare:2,dikdortgen:2}, use:"Ekran"},
+      {t:"Okuma", s:"Yakın iş ve okuma için", p:{oval:2,panto:1}, use:"Okuma"},
+      {t:"Güneş", s:"Dışarıda, araç kullanırken", p:{aviator:3,kelebek:2}, use:"Güneş"}
+    ]},
+    {k:"gorunum", q:"Nasıl bir görünüm istiyorsunuz?", a:[
+      {t:"Fark edilmeyen", s:"İnce hatlı, yüze karışan", p:{oval:2,yuvarlak:1},
+       n:"İnce metal veya çerçevesiz montaj uygun olur.", mat:["Titanyum","Metal"]},
+      {t:"Belirgin", s:"Kalın çerçeve, net duruş", p:{kare:2,dikdortgen:2},
+       n:"Kalın asetat yüzde net bir çizgi bırakır.", mat:["Asetat"]},
+      {t:"Klasik", s:"Zamansız, sade biçimler", p:{panto:2,aviator:1,oval:1},
+       n:"Bağa deseni ve antik altın gibi zamansız renkler yakışır.", mat:["Asetat","Metal"]},
+      {t:"Dikkat çeken", s:"Renk ve desen görünsün", p:{kelebek:3,yuvarlak:1},
+       n:"Desenli asetat ve kontrast iç renkler iyi sonuç verir.", mat:["Asetat"]}
+    ]},
+    {k:"agirlik", q:"Ağırlık ve dayanıklılık konusunda?", a:[
+      {t:"Çok hafif olsun", s:"Burunda iz kalmasın", p:{oval:1}, mat:["Titanyum","TR90"]},
+      {t:"Dayanıklı olsun", s:"Sık düşürüyorum", p:{dikdortgen:1}, mat:["TR90","Asetat"]},
+      {t:"Fark etmez", s:"Görünüm daha önemli", p:{}, mat:["Asetat","Metal"]}
+    ]},
+    {k:"numara", q:"Numaranız yaklaşık ne kadar?", a:[
+      {t:"Bilmiyorum", s:"Reçetem yanımda değil", num:null},
+      {t:"Düşük", s:"2 dereceye kadar", num:1},
+      {t:"Orta", s:"2 ile 5 derece arası", num:3.5},
+      {t:"Yüksek", s:"5 dereceden fazla", num:6}
+    ]},
+    {k:"sikayet", q:"Şu anki gözlüğünüzde sizi en çok ne rahatsız ediyor?", a:[
+      {t:"Öne kayıyor", s:"Sürekli itmek gerekiyor", n:"Kayma çoğu zaman çerçeve değil ayar sorunudur; burunluk ve sap açısı düzeltilince geçer."},
+      {t:"İz bırakıyor", s:"Burunda kızarıklık oluyor", n:"Ağırlık ve burunluk tipi belirleyici. Titanyum veya TR90 ile silikon burunluk öneriyoruz.", mat:["Titanyum","TR90"]},
+      {t:"Camlar kalın duruyor", s:"Yandan kalınlık görünüyor", n:"Daha küçük ve yuvarlak hatlı bir çerçeve ile yüksek indeksli cam kalınlığı belirgin şekilde azaltır.", ince:true},
+      {t:"Bir şikayetim yok", s:"Sadece yenilemek istiyorum", n:""}
+    ]}
   ];
-  const shell='<div class="qstep" id="qStep"></div><h3 id="qTitle"></h3><div class="opts" id="qOpts"></div><div class="qbar"><i id="qBar"></i></div>';
-  let qi=0, answers={};
-  function step(){
-    const s=QUIZ[qi];
-    $("#qStep").textContent="Soru "+(qi+1)+" / "+QUIZ.length;
-    $("#qTitle").textContent=s.q;
-    $("#qOpts").innerHTML=s.a.map((o,i)=>`<button class="opt" data-i="${i}">${o.t}<small>${o.s}</small></button>`).join("");
-    $("#qBar").style.width=(qi/QUIZ.length*100)+"%";
+
+  const kabuk = '<div class="qstep" id="qStep"></div><h3 id="qTitle"></h3><div class="opts" id="qOpts"></div><div class="qbar"><i id="qBar"></i></div>';
+  let adim = 0, secimler = [];
+
+  function soruCiz(){
+    const s = SORULAR[adim];
+    $("#qStep").textContent = "Soru " + (adim+1) + " / " + SORULAR.length;
+    $("#qTitle").textContent = s.q;
+    $("#qOpts").innerHTML = s.a.map((o,i)=>
+      `<button class="opt" data-i="${i}">${o.t}<small>${o.s}</small></button>`).join("");
+    $("#qBar").style.width = (adim/SORULAR.length*100)+"%";
     $$("#qOpts .opt").forEach(b=>b.addEventListener("click",()=>{
-      answers[s.k]=s.a[+b.dataset.i].v; qi++; qi<QUIZ.length?step():result();
+      secimler[adim] = s.a[+b.dataset.i];
+      adim++;
+      adim < SORULAR.length ? soruCiz() : sonucCiz();
     }));
   }
-  function result(){
-    const {face,use,style,weight}=answers;
-    const byFace={
-      yuvarlak:[["kare","Köşeli hatlar yumuşak yüz çizgilerini dengeler ve yüzü daha uzun gösterir."],
-                ["dikdortgen","Yatayda geniş, dikeyde ince kesim yanak dolgunluğunu dengeler."],
-                ["kelebek","Yukarı doğru genişleyen üst hat bakışı yukarı taşır."]],
-      kare:[["yuvarlak","Yuvarlak hatlar belirgin çene ve alın çizgisini yumuşatır."],
-            ["oval","Yumuşak oval kesim köşeli hatların karşısında denge kurar."],
-            ["panto","Üstü düz, altı yuvarlak biçim keskinliği kırar."]],
-      oval:[["dikdortgen","Oval yüz çoğu biçimi taşır; dikdörtgen net bir çerçeve hattı verir."],
-            ["panto","Klasik ve dengeli, yüz oranlarını bozmaz."],
-            ["aviator","Damla kesim oval yüzde oturaklı durur."]],
-      kalp:[["oval","Altta genişleyen yumuşak hat dar çene ile denge kurar."],
-            ["panto","Yuvarlağa yakın alt hat alnın genişliğini dengeler."],
-            ["yuvarlak","Yumuşak daire biçimi sivri çene hattını dengeler."]]
-    }[face]||[];
-    const mats = weight==="hafif"?["Titanyum","TR90"]:weight==="saglam"?["Asetat","TR90"]:["Asetat","Metal"];
-    const styleNote={ince:"İnce metal veya çerçevesiz montaj tercih edin.",
-      kalin:"Kalın asetat, yüzde net bir çizgi bırakır.",
-      klasik:"Bağa deseni ve antik altın gibi zamansız renkler uygun olur.",
-      renkli:"Desenli asetat ve kontrast iç renkler iyi sonuç verir."}[style];
-    const useNote={"Günlük":"Gün boyu kullanımda burunluk ayarı ve sap boyu belirleyicidir; mağazada ayarlıyoruz.",
-      "Ekran":"Ekran kullanımında cam kaplaması, çerçeve biçiminden daha etkilidir.",
-      "Okuma":"Okuma için biraz daha alçak ve hafif çerçeveler rahat olur.",
-      "Güneş":"Güneş için yüzü saran, biraz daha büyük kesimler tercih edilir."}[use];
-    const stok=FRAMES.filter(f=>(f.kullanim===use||use==="Günlük")&&mats.includes(f.malzeme)).slice(0,3);
-    $("#qBar").style.width="100%";
-    $("#qStep").textContent="Sonuç";
-    $("#qTitle").textContent="Denemeye buradan başlayın";
-    $("#qOpts").innerHTML="";
-    $("#quiz").insertAdjacentHTML("beforeend",`
-      <div style="margin-top:22px">
-        <div class="frames" style="grid-template-columns:repeat(3,1fr)">
-          ${byFace.slice(0,3).map(([sh,why])=>`<article class="frame">${glassesSVG(sh)}
-            <div class="code">${sh.charAt(0).toUpperCase()+sh.slice(1)}</div>
-            <div class="meta">${why}</div></article>`).join("")}
-        </div>
-        <p style="margin-top:20px">Malzeme olarak ${mats.join(" veya ")} öneriyoruz. ${styleNote} ${useNote}</p>
-        ${stok.length?`<p>Mağazada şu an bulunan yakın modeller: ${stok.map(s=>esc(s.kod)).join(", ")}.</p>`:""}
-        <p class="note">Bu öneri genel yüz oranlarına dayanır. Çerçeve seçimi denemeden tamamlanmaz; birkaç modeli birlikte deneyebiliriz.</p>
-        <div class="btnrow"><a class="btn" href="randevu.html">Randevu oluştur</a>
-        <button class="btn ghost" id="qReset">Baştan başla</button></div>
+
+  function sonucCiz(){
+    /* puanları topla */
+    const puan = {};
+    Object.keys(BICIM).forEach(k=>puan[k]=0);
+    let boy="orta", kullanim="Günlük", numara=null, ince=false;
+    const matSay={}, notlar=[];
+
+    secimler.forEach(o=>{
+      if(o.p) Object.keys(o.p).forEach(k=>{ puan[k]=(puan[k]||0)+o.p[k]; });
+      if(o.boy) boy=o.boy;
+      if(o.use) kullanim=o.use;
+      if(o.num!==undefined && o.num!==null) numara=o.num;
+      if(o.ince) ince=true;
+      if(o.mat) o.mat.forEach(m=>{ matSay[m]=(matSay[m]||0)+1; });
+      if(o.n) notlar.push(o.n);
+    });
+
+    /* yüksek numara küçük ve yuvarlak çerçeveyi öne çıkarır */
+    if(numara!==null && numara>=3.5){
+      puan.oval+=2; puan.yuvarlak+=2; puan.panto+=1;
+      puan.kelebek=Math.max(0,puan.kelebek-1); puan.aviator=Math.max(0,puan.aviator-1);
+      if(boy==="büyük") boy="orta";
+      ince=true;
+    }
+
+    const sirali = Object.keys(puan).sort((a,b)=>puan[b]-puan[a]).slice(0,3);
+    const enYuksek = Math.max(1, puan[sirali[0]]);
+    const malzemeler = Object.keys(matSay).sort((a,b)=>matSay[b]-matSay[a]).slice(0,2);
+    const mat = malzemeler.length ? malzemeler : ["Asetat","Metal"];
+
+    const camNot = numara===null
+      ? "Numaranızı bilmiyorsanız reçetenizi getirin; cam kalınlığını birlikte değerlendirelim."
+      : numara>=6 ? "Bu numarada yüksek indeksli (1.67 veya 1.74) cam belirgin fark yaratır; kalınlık ve ağırlık ciddi şekilde azalır."
+      : numara>=3.5 ? "1.60 veya 1.67 indeksli cam kalınlığı gözle görülür biçimde azaltır."
+      : "Bu numarada standart cam yeterlidir; incelik için ekstra ödeme yapmanıza gerek yok.";
+
+    const boyNot = {
+      "küçük":"Dar yüz için daha küçük göz genişliği ve kısa köprü uygun olur.",
+      "orta":"Standart ölçüler size uyacaktır.",
+      "büyük":"Geniş yüz için daha uzun sap ve geniş köprü gerekir; dar çerçeveler şakakları sıkar."
+    }[boy];
+
+    /* mağaza stoğundan eşleşen ürünler */
+    const stok = FRAMES.filter(f =>
+      (f.kullanim===kullanim || kullanim==="Günlük") &&
+      mat.indexOf(f.malzeme) > -1 &&
+      (f.adet==null || Number(f.adet)>0)
+    ).slice(0,4);
+
+    $("#qBar").style.width = "100%";
+    $("#qStep").textContent = "Sonuç";
+    $("#qTitle").textContent = "Size en uygun üç biçim";
+    $("#qOpts").innerHTML = "";
+
+    const kartlar = sirali.map((sh,i)=>{
+      const neden = secimler.find(o=>o.p && o.p[sh] && o.n);
+      return `<div class="puan">
+        <div class="sira">${i+1}. SIRA</div>
+        ${glassesSVG(sh)}
+        <b>${BICIM[sh]}</b>
+        <p>${neden && neden.n ? esc(neden.n) : "Verdiğiniz yanıtlarla uyumlu bir biçim."}</p>
+        <div class="cubuk"><i style="width:${Math.round(puan[sh]/enYuksek*100)}%"></i></div>
+      </div>`;
+    }).join("");
+
+    const ozet = [
+      "Akan Optik & Lens — çerçeve önerisi",
+      "Biçim: " + sirali.map(x=>BICIM[x]).join(", "),
+      "Ölçü: " + boy,
+      "Malzeme: " + mat.join(" veya "),
+      "Kullanım: " + kullanim,
+      stok.length ? "Mağazada bakılabilecek modeller: " + stok.map(x=>x.kod).join(", ") : "",
+      "Denemek için uğrayacağım."
+    ].filter(Boolean).join("\n");
+
+    $("#quiz").insertAdjacentHTML("beforeend", `
+      <div class="sonucUst">
+        <h3>${BICIM[sirali[0]]} ile başlayın</h3>
+        <p>Ölçü olarak ${boy}, malzeme olarak ${mat.join(" veya ")}. Aşağıdaki üç biçimi yan yana denemek en doğrusu.</p>
+      </div>
+      <div class="puanlar">${kartlar}</div>
+      <div class="oneriler">
+        <dl>
+          <dt>Ölçü</dt><dd>${boyNot}</dd>
+          <dt>Malzeme</dt><dd>${mat.join(" veya ")}. ${notlar.filter(Boolean).slice(0,2).join(" ")}</dd>
+          <dt>Cam</dt><dd>${camNot}</dd>
+          ${ince?'<dt>Kalınlık</dt><dd>Küçük göz genişliği olan bir çerçeve, aynı numarada camın kenar kalınlığını azaltır. Biçim seçimi burada camdan daha etkilidir.</dd>':''}
+          ${stok.length?`<dt>Mağazada</dt><dd>Şu an bulunan yakın modeller: ${stok.map(x=>esc(x.kod)).join(", ")}. <a href="cerceveler.html">Çerçevelere bakın</a></dd>`:''}
+        </dl>
+      </div>
+      <p class="note" style="margin-top:20px">Bu öneri genel yüz oranlarına ve verdiğiniz yanıtlara dayanır. Aynı biçimdeki iki çerçeve, köprü genişliği ve sap boyu farklıysa yüzünüzde bambaşka durur; son kararı denedikten sonra verin.</p>
+      <div class="btnrow">
+        <button class="btn" id="qGonder">Sonucu WhatsApp ile gönder</button>
+        <a class="btn ghost" href="randevu.html">Randevu oluştur</a>
+        <button class="btn ghost" id="qReset">Baştan başla</button>
       </div>`);
-    $("#qReset").addEventListener("click",()=>{ qi=0; answers={}; $("#quiz").innerHTML=shell; step(); });
+
+    $("#qGonder").addEventListener("click",()=>send(ozet));
+    $("#qReset").addEventListener("click",()=>{
+      adim=0; secimler=[]; $("#quiz").innerHTML=kabuk; soruCiz();
+    });
   }
-  loadStock().then(()=>{ $("#quiz").innerHTML=shell; step(); });
+
+  loadStock().then(()=>{ $("#quiz").innerHTML=kabuk; soruCiz(); });
 }
 
 /* ---------- onarım formu ---------- */

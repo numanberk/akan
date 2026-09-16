@@ -327,6 +327,13 @@ textarea{min-height:88px;resize:vertical}
 .markagrid h4{font-family:"Archivo";font-size:12px;font-weight:600;color:var(--muted);margin:0 0 4px;letter-spacing:.02em}
 .markagrid p{font-family:"Archivo";font-size:15.5px;font-weight:600;margin:0;color:var(--ink);max-width:none}
 
+/* ---------- lens sayfası filtreleri ---------- */
+.lensAra{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end;margin-bottom:18px}
+.lensAra .field{margin:0;max-width:220px}
+.lensAra .filters{margin:0}
+.stoktab td.aralik b{font-family:"Archivo";font-weight:600;font-size:14.5px;display:block}
+.stoktab td.aralik small{display:block;color:var(--muted);font-size:12px;margin-top:2px;line-height:1.4}
+
 </style>
 <link rel="icon" href="favicon.ico" sizes="32x32">
 <link rel="icon" href="favicon-32.png" type="image/png">
@@ -336,10 +343,8 @@ textarea{min-height:88px;resize:vertical}
 <meta property="og:image:height" content="630">
 <meta property="og:url" content="https://akanoptik.pages.dev/recete.html">
 <meta name="twitter:card" content="summary_large_image">
-<!-- Cloudflare Web Analytics: Pages panelinden açıldığında bu satıra gerek yoktur.
-     Elle eklemek isterseniz token'ı yazıp yorumu kaldırın:
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "BURAYA_TOKEN"}'></script>
--->
+<!-- Cloudflare Web Analytics -->
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "bd5103f6e1ff442b8fb9a002c1f478dd"}'></script>
 
 </head>
 <body>
@@ -626,12 +631,12 @@ let FRAMES=[
   {kod:"AK-130",tip:"dikdortgen",malzeme:"TR90",    renk:"Kiremit",     kullanim:"Çocuk", kime:"Çocuk", adet:4,gorsel:""}
 ];
 let LENSES=[
-  {kod:"LN-01",tur:"Günlük",       paket:"30 adet", ozellik:"Küresel",    aralik:"-0.50 / -6.00",adet:12,not:""},
-  {kod:"LN-02",tur:"Aylık",        paket:"6 adet",  ozellik:"Küresel",    aralik:"-0.75 / -8.00",adet:8, not:""},
-  {kod:"LN-03",tur:"Aylık",        paket:"6 adet",  ozellik:"Torik",      aralik:"-1.00 / -6.00",adet:4, not:"Astigmat için"},
-  {kod:"LN-04",tur:"Aylık",        paket:"6 adet",  ozellik:"Multifokal", aralik:"-1.00 / -5.00",adet:0, not:"Yakın ilaveli"},
-  {kod:"LN-05",tur:"Günlük",       paket:"30 adet", ozellik:"Torik",      aralik:"-0.75 / -5.00",adet:5, not:""},
-  {kod:"LN-06",tur:"Lens solüsyonu",paket:"360 ml", ozellik:"Çok amaçlı", aralik:"—",           adet:9, not:""}
+  {kod:"AO1150/00LF",ad:"Acuvue Oasys",marka:"Johnson & Johnson",urun:"Acuvue Oasys",tur:"İki haftalık",ozellik:"Küresel",paket:"6 adet",bc:"8.4 / 8.8",cap:"14.0",
+   araliklar:[{min:-12,max:-6.5,adim:0.5},{min:-6,max:-0.5,adim:0.25},{min:0.5,max:6,adim:0.25},{min:6.5,max:8,adim:0.5}],adet:3,not:""},
+  {kod:"BSP1700/00LF",ad:"Biofinity",marka:"CooperVision",urun:"Biofinity",tur:"Aylık",ozellik:"Küresel",paket:"6 adet",bc:"8.6",cap:"14.0",
+   araliklar:[{min:-12,max:-6.5,adim:0.5},{min:-6,max:6,adim:0.25},{min:6.5,max:8,adim:0.5}],adet:2,not:""},
+  {kod:"TOT2000/00LF",ad:"Total 30",marka:"Alcon",urun:"Total 30",tur:"Aylık",ozellik:"Küresel",paket:"6 adet",bc:"8.4",cap:"14.2",
+   araliklar:[{min:-12,max:-6.5,adim:0.5},{min:-6,max:-0.25,adim:0.25},{min:0.25,max:6,adim:0.25},{min:6.5,max:8,adim:0.5}],adet:0,not:""}
 ];
 
 let stockLoaded = null;
@@ -790,7 +795,7 @@ function reserveLens(kod){
   const l=LENSES.find(x=>x.kod===kod); if(!l) return;
   const who=prompt("Adınız ve telefon numaranız:"); if(!who) return;
   send(["Lens ayırtma talebi — Akan Optik",
-    "Ürün: "+l.kod+" — "+l.tur+", "+l.ozellik+", "+l.paket,
+    "Ürün: "+(l.ad || ((l.marka||"")+" "+(l.urun||"")).trim() || l.kod)+" — "+l.tur+(l.paket?", "+l.paket:""),
     "İleten: "+who,
     "Numaramı mağazada reçetemle birlikte vereceğim.",
     "İki gün ayrılmasını rica ediyorum."].join("\n"));
@@ -824,21 +829,63 @@ if($("#frames")){
 
 /* ---------- lens stoğu ---------- */
 if($("#lenses")){
+  const fmt = n => (n>0?"+":"")+n.toFixed(2);
+  function aralikMetni(l){
+    if(Array.isArray(l.araliklar) && l.araliklar.length){
+      const hepsi=l.araliklar; const mn=Math.min(...hepsi.map(r=>r.min)), mx=Math.max(...hepsi.map(r=>r.max));
+      const detay=hepsi.map(r=>fmt(r.min)+" … "+fmt(r.max)+" ("+r.adim.toFixed(2)+")").join(" · ");
+      return "<b>"+fmt(mn)+" ile "+fmt(mx)+"</b><small>"+esc(detay)+"</small>";
+    }
+    return esc(l.aralik||"—");
+  }
+  function kapsiyorMu(l, sph){
+    if(!Array.isArray(l.araliklar) || !l.araliklar.length) return null;
+    return l.araliklar.some(r=>{
+      if(sph < r.min-1e-9 || sph > r.max+1e-9) return false;
+      const k=(sph-r.min)/r.adim; return Math.abs(k-Math.round(k))<1e-6;
+    });
+  }
+  let turF="Tümü", sphF=null;
+  const TURLER=["Tümü","Günlük","İki haftalık","Aylık","Solüsyon"];
+
+  function drawLensFilters(){
+    const el=$("#lensFilters"); if(!el) return;
+    el.innerHTML=TURLER.map(t=>`<button class="chip" data-t="${t}" aria-pressed="${t===turF}">${t}</button>`).join("");
+    $$("#lensFilters .chip").forEach(b=>b.addEventListener("click",()=>{turF=b.dataset.t;drawLensFilters();drawLenses();}));
+  }
   function drawLenses(){
-    if(!LENSES.length){ $("#lenses").innerHTML='<p class="note">Lens listesi henüz yüklenmedi.</p>'; return; }
+    let liste=LENSES.filter(l=>turF==="Tümü"||l.tur===turF);
+    if(sphF!==null) liste=liste.filter(l=>kapsiyorMu(l,sphF)!==false);
+    if(!liste.length){
+      $("#lenses").innerHTML='<p class="note">'+(sphF!==null?"Bu numarayı kapsayan ürün görünmüyor. Yakın numaralar için bize sorabilirsiniz.":"Bu türde ürün görünmüyor.")+'</p>';
+      return;
+    }
     $("#lenses").innerHTML=`<table class="stoktab">
-      <thead><tr><th>Ürün</th><th>Tür</th><th>Özellik</th><th>Paket</th><th>Numara aralığı</th><th>Durum</th><th></th></tr></thead>
-      <tbody>${LENSES.map(l=>{
+      <thead><tr><th>Ürün</th><th>Değişim</th><th>Özellik</th><th>Paket</th><th>BC / Çap</th><th>Numara aralığı</th><th>Durum</th><th></th></tr></thead>
+      <tbody>${liste.map(l=>{
         const varMi=Number(l.adet)>0;
+        const ad=esc(l.ad || ((l.marka||"")+" "+(l.urun||"")).trim() || l.kod);
         return `<tr>
-          <td><b>${esc(l.kod)}</b>${l.not?`<small>${esc(l.not)}</small>`:""}</td>
-          <td>${esc(l.tur)}</td><td>${esc(l.ozellik)}</td><td>${esc(l.paket)}</td><td>${esc(l.aralik)}</td>
-          <td class="${varMi?"ok":"no"}">${varMi?"Stokta":"Tükendi"}</td>
+          <td data-l="Ürün"><b>${ad}</b>${l.not&&!/katalogdan/i.test(l.not)?`<small>${esc(l.not)}</small>`:""}</td>
+          <td data-l="Değişim">${esc(l.tur)}</td>
+          <td data-l="Özellik">${esc(l.ozellik)}</td>
+          <td data-l="Paket">${esc(l.paket)}</td>
+          <td data-l="BC / Çap">${esc(l.bc||"—")} / ${esc(l.cap||"—")}</td>
+          <td data-l="Aralık" class="aralik">${aralikMetni(l)}</td>
+          <td data-l="Durum" class="${varMi?"ok":"no"}">${varMi?"Stokta":"Tükendi"}</td>
           <td>${varMi?`<button class="btn ghost small" data-lens="${esc(l.kod)}">Ayırt</button>`:`<span class="note">Sorabilirsiniz</span>`}</td>
         </tr>`;}).join("")}</tbody></table>`;
     $$("[data-lens]").forEach(b=>b.addEventListener("click",()=>reserveLens(b.dataset.lens)));
   }
-  loadStock().then(drawLenses);
+  const sphIn=$("#sphAra");
+  if(sphIn){
+    sphIn.addEventListener("input",()=>{
+      const t=sphIn.value.trim().replace(",",".");
+      sphF = t==="" ? null : (isNaN(parseFloat(t)) ? null : parseFloat(t));
+      drawLenses();
+    });
+  }
+  loadStock().then(()=>{ drawLensFilters(); drawLenses(); });
 }
 
 /* ---------- çerçeve bulucu (puanlamalı) ---------- */

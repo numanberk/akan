@@ -535,11 +535,11 @@ let FRAMES=[
   {kod:"AK-130",tip:"dikdortgen",malzeme:"TR90",    renk:"Kiremit",     kullanim:"Çocuk", kime:"Çocuk", adet:4,gorsel:""}
 ];
 let LENSES=[
-  {kod:"AO1150/00LF",marka:"Johnson & Johnson",urun:"Acuvue Oasys",tur:"İki haftalık",ozellik:"Küresel",paket:"6 adet",bc:"8.4 / 8.8",cap:"14.0",
+  {kod:"AO1150/00LF",ad:"Acuvue Oasys",marka:"Johnson & Johnson",urun:"Acuvue Oasys",tur:"İki haftalık",ozellik:"Küresel",paket:"6 adet",bc:"8.4 / 8.8",cap:"14.0",
    araliklar:[{min:-12,max:-6.5,adim:0.5},{min:-6,max:-0.5,adim:0.25},{min:0.5,max:6,adim:0.25},{min:6.5,max:8,adim:0.5}],adet:3,not:""},
-  {kod:"BSP1700/00LF",marka:"CooperVision",urun:"Biofinity",tur:"Aylık",ozellik:"Küresel",paket:"6 adet",bc:"8.6",cap:"14.0",
+  {kod:"BSP1700/00LF",ad:"Biofinity",marka:"CooperVision",urun:"Biofinity",tur:"Aylık",ozellik:"Küresel",paket:"6 adet",bc:"8.6",cap:"14.0",
    araliklar:[{min:-12,max:-6.5,adim:0.5},{min:-6,max:6,adim:0.25},{min:6.5,max:8,adim:0.5}],adet:2,not:""},
-  {kod:"TOT2000/00LF",marka:"Alcon",urun:"Total 30",tur:"Aylık",ozellik:"Küresel",paket:"6 adet",bc:"8.4",cap:"14.2",
+  {kod:"TOT2000/00LF",ad:"Total 30",marka:"Alcon",urun:"Total 30",tur:"Aylık",ozellik:"Küresel",paket:"6 adet",bc:"8.4",cap:"14.2",
    araliklar:[{min:-12,max:-6.5,adim:0.5},{min:-6,max:-0.25,adim:0.25},{min:0.25,max:6,adim:0.25},{min:6.5,max:8,adim:0.5}],adet:0,not:""}
 ];
 
@@ -699,7 +699,7 @@ function reserveLens(kod){
   const l=LENSES.find(x=>x.kod===kod); if(!l) return;
   const who=prompt("Adınız ve telefon numaranız:"); if(!who) return;
   send(["Lens ayırtma talebi — Akan Optik",
-    "Ürün: "+((l.marka||"")+" "+(l.urun||"")).trim()+" ("+l.kod+") — "+l.tur+", "+l.paket,
+    "Ürün: "+(l.ad || ((l.marka||"")+" "+(l.urun||"")).trim() || l.kod)+" — "+l.tur+(l.paket?", "+l.paket:""),
     "İleten: "+who,
     "Numaramı mağazada reçetemle birlikte vereceğim.",
     "İki gün ayrılmasını rica ediyorum."].join("\n"));
@@ -768,7 +768,7 @@ if($("#lenses")){
       <thead><tr><th>Ürün</th><th>Değişim</th><th>Özellik</th><th>Paket</th><th>BC / Çap</th><th>Numara aralığı</th><th>Durum</th><th></th></tr></thead>
       <tbody>${liste.map(l=>{
         const varMi=Number(l.adet)>0;
-        const ad=(l.marka||l.urun)?esc(((l.marka||"")+" "+(l.urun||"")).trim()):esc(l.kod);
+        const ad=esc(l.ad || ((l.marka||"")+" "+(l.urun||"")).trim() || l.kod);
         return `<tr>
           <td data-l="Ürün"><b>${ad}</b>${l.not&&!/katalogdan/i.test(l.not)?`<small>${esc(l.not)}</small>`:""}</td>
           <td data-l="Değişim">${esc(l.tur)}</td>

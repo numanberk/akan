@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>İletişim ve konum — Akan Optik, Kayıhan Osmangazi Bursa</title>
 <meta name="description" content="Akan Optik adres, telefon, çalışma saatleri ve harita. Kayıhan, Atatürk Caddesi No:12, 16230 Osmangazi Bursa.">
-<link rel="canonical" href="https://akanoptik.pages.dev/iletisim.html">
+<link rel="canonical" href="https://akanoptik.com/iletisim">
 <meta property="og:title" content="İletişim ve konum — Akan Optik, Kayıhan Osmangazi Bursa">
 <meta property="og:description" content="Akan Optik adres, telefon, çalışma saatleri ve harita. Kayıhan, Atatürk Caddesi No:12, 16230 Osmangazi Bursa.">
 <meta property="og:locale" content="tr_TR">
@@ -68,11 +68,18 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .topnav a:hover{color:#fff}
 .topnav a[aria-current=page]{color:#fff;border-bottom-color:var(--copper)}
 .callbtn{margin-left:4px;background:var(--copper);color:#fff;text-decoration:none;font-family:"Archivo";font-weight:600;font-size:13.5px;padding:8px 14px;border-radius:var(--r);white-space:nowrap}
+.menubtn{display:none}
 @media(max-width:860px){
-  .topbar .wrap{flex-wrap:wrap;height:auto;padding-top:10px;padding-bottom:0}
-  .topnav{order:3;width:100%;margin:8px -22px 0;padding:0 22px 9px;gap:15px;
-    border-top:1px solid rgba(255,255,255,.09)}
-  .topnav a{padding-top:9px}
+  .topbar .wrap{height:56px}
+  .callbtn{display:none}
+  .menubtn{display:block;margin-left:auto;background:transparent;color:#fff;border:1px solid rgba(255,255,255,.35);
+    border-radius:var(--r);font-family:"Archivo";font-size:14px;font-weight:600;padding:8px 14px;cursor:pointer}
+  .menubtn[aria-expanded=true]{background:#fff;color:var(--navy-deep);border-color:#fff}
+  .topnav{display:none;position:absolute;left:0;right:0;top:56px;margin:0;padding:6px 22px 16px;
+    background:var(--navy-deep);border-bottom:1px solid rgba(255,255,255,.12);flex-direction:column;gap:0;overflow:visible}
+  body.menuAcik .topnav{display:flex}
+  .topnav a{font-size:17px;padding:13px 0;border-bottom:1px solid rgba(255,255,255,.08);color:#DCE5EF}
+  .topnav a[aria-current=page]{border-bottom-color:rgba(255,255,255,.08);color:#fff;box-shadow:inset 3px 0 0 var(--copper);padding-left:12px}
 }
 
 /* ---------- sayfa başlığı ---------- */
@@ -334,21 +341,65 @@ textarea{min-height:88px;resize:vertical}
 .stoktab td.aralik b{font-family:"Archivo";font-weight:600;font-size:14.5px;display:block}
 .stoktab td.aralik small{display:block;color:var(--muted);font-size:12px;margin-top:2px;line-height:1.4}
 
+
+/* ---------- ana sayfa: yıl satırı ---------- */
+.wordmark .yil{font-family:"Archivo";font-size:15px;font-weight:600;color:var(--copper);
+  margin:22px auto 0;letter-spacing:.01em;max-width:none}
+.wordmark .yil + .sub{margin-top:10px}
+
+/* ---------- stok boşken ---------- */
+.bosstok{background:var(--card);border:1px solid var(--line);padding:26px;max-width:640px}
+.bosstok h3{margin-bottom:6px}
+.bosstok p{color:var(--muted);margin-bottom:4px}
+
+/* ---------- mobil hızlı iletişim çubuğu ---------- */
+.eylem{display:none}
+@media(max-width:860px){
+  .eylem{display:grid;grid-template-columns:1fr 1.2fr 1fr;position:fixed;left:0;right:0;bottom:0;z-index:50;
+    background:#fff;border-top:1px solid var(--line);box-shadow:0 -2px 10px rgba(12,28,49,.08);
+    padding:8px 10px calc(8px + env(safe-area-inset-bottom));gap:8px}
+  .eylem a{display:flex;align-items:center;justify-content:center;min-height:46px;border-radius:var(--r);
+    font-family:"Archivo";font-weight:700;font-size:15px;text-decoration:none;color:var(--navy);border:1px solid var(--line)}
+  .eylem a.wa{background:var(--navy);color:#fff;border-color:var(--navy)}
+  body{padding-bottom:72px}
+}
+
+/* ---------- mobilde daha sıkı düzen ---------- */
+@media(max-width:600px){
+  body{font-size:16.5px}
+  .hero{padding:22px 0 0}
+  .wordmark{padding:34px 18px 30px}
+  .wordmark .rule{margin-bottom:20px}
+  .wordmark .sub{font-size:15.5px;margin-top:8px}
+  .pagehead{padding:28px 0 22px}
+  .lede{font-size:17px}
+  .block{padding:38px 0}
+  .block.tight{padding:26px 0}
+  .band{padding:36px 0}
+  .btnrow .btn{flex:1 1 auto;text-align:center}
+  .foot{margin-top:24px}
+}
+
+.stoktab .urun small{display:block}
+@media(max-width:760px){.stoktab .urun{text-align:right}}
+
 </style>
-<link rel="icon" href="favicon.ico" sizes="32x32">
-<link rel="icon" href="favicon-32.png" type="image/png">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
-<meta property="og:image" content="https://akanoptik.pages.dev/paylasim.png">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/favicon-32.png" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta property="og:image" content="https://akanoptik.com/paylasim.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:url" content="https://akanoptik.pages.dev/iletisim.html">
+<meta property="og:url" content="https://akanoptik.com/iletisim">
+<meta name="theme-color" content="#0C1C31">
 <meta name="twitter:card" content="summary_large_image">
 <!-- Cloudflare Web Analytics -->
 <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "bd5103f6e1ff442b8fb9a002c1f478dd"}'></script>
 <script type="application/ld+json">
 {
   "@context":"https://schema.org","@type":"Optician","name":"Akan Optik",
-  "telephone":"+902242211219","url":"https://akanoptik.pages.dev/",
+  "telephone":"+902242211219","url":"https://akanoptik.com/","image":"https://akanoptik.com/paylasim.png",
+  "hasMap":"https://www.google.com/maps/search/?api=1&query=Akan+Optik+Atat%C3%BCrk+Caddesi+No:12+Osmangazi+Bursa",
   "address":{"@type":"PostalAddress","streetAddress":"Atatürk Caddesi No:12, Kayıhan",
     "addressLocality":"Osmangazi","addressRegion":"Bursa","postalCode":"16230","addressCountry":"TR"},
   "areaServed":["Osmangazi","Nilüfer","Yıldırım","Bursa"],
@@ -361,16 +412,17 @@ textarea{min-height:88px;resize:vertical}
 <body>
 <header class="topbar">
   <div class="wrap">
-    <a class="brand" href="index.html">AKAN OPTİK</a>
-    <nav class="topnav" aria-label="Ana menü"><a href="randevu.html">Randevu</a><a href="recete.html">Reçeteniz</a><a href="cerceve-bulucu.html">Çerçeve bulucu</a><a href="cerceveler.html">Çerçeveler</a><a href="lensler.html">Lensler</a><a href="onarim.html">Onarım</a><a href="sss.html">Sık sorulanlar</a><a href="hakkimizda.html">Hakkımızda</a><a href="iletisim.html" aria-current=page>İletişim</a></nav>
+    <a class="brand" href="/">AKAN OPTİK</a>
+    <button class="menubtn" id="menuBtn" type="button" aria-expanded="false" aria-controls="anaMenu">Menü</button>
+    <nav class="topnav" id="anaMenu" aria-label="Ana menü"><a href="/randevu">Randevu</a><a href="/recete">Reçeteniz</a><a href="/cerceve-bulucu">Çerçeve bulucu</a><a href="/cerceveler">Çerçeveler</a><a href="/lensler">Lensler</a><a href="/onarim">Onarım</a><a href="/sss">Sık sorulanlar</a><a href="/hakkimizda">Hakkımızda</a><a href="/iletisim" aria-current="page">İletişim</a></nav>
     <a class="callbtn" href="tel:+902242211219">0224 221 12 19</a>
   </div>
 </header>
 <div class="pagehead">
   <div class="wrap">
-    <div class="crumb"><a href="index.html">Akan Optik</a> &nbsp;/&nbsp; İletişim</div>
+    <div class="crumb"><a href="/">Akan Optik</a> &nbsp;/&nbsp; İletişim</div>
     <h1>İletişim ve konum</h1>
-    <p class="lede">Cadde üzerinde, Kayıhan’da. Otopark ve toplu taşıma seçenekleri yürüme mesafesinde.</p>
+    <p class="lede">Setbaşı’nda, Atatürk Caddesi üzerinde. Irgandı Köprüsü’ne birkaç dakika yürüme mesafesinde.</p>
   </div>
 </div>
 <main><section class="block">
@@ -378,13 +430,13 @@ textarea{min-height:88px;resize:vertical}
     <div>
       <h2>Adres</h2>
       <p>Kayıhan, Atatürk Caddesi No:12<br>16230 Osmangazi / Bursa</p>
-      <h2 style="margin-top:28px">Telefon</h2>
-      <p><a href="tel:+902242211219">0224 221 12 19</a></p>
+      <h2 style="margin-top:28px">Telefon ve WhatsApp</h2>
+      <p><a href="tel:+902242211219">0224 221 12 19</a><br><a href="https://wa.me/905335927548?text=Merhaba%2C%20Akan%20Optik%E2%80%99e%20bir%20sorum%20var." target="_blank" rel="noopener">WhatsApp: 0533 592 75 48</a></p>
       <h2 style="margin-top:28px">Çalışma saatleri</h2>
       <p id="openState" style="font-family:Archivo;font-size:15px">Pazartesi – Cumartesi 09:00 – 18:30, Pazar kapalı</p>
       <div class="btnrow">
         <a class="btn" href="https://www.google.com/maps/search/?api=1&amp;query=Akan+Optik+Atat%C3%BCrk+Caddesi+No:12+Kay%C4%B1han+Osmangazi+Bursa" target="_blank" rel="noopener">Yol tarifi al</a>
-        <a class="btn ghost" href="randevu.html">Randevu oluştur</a>
+        <a class="btn ghost" href="https://wa.me/905335927548?text=Merhaba%2C%20Akan%20Optik%E2%80%99e%20bir%20sorum%20var." target="_blank" rel="noopener">WhatsApp’tan yazın</a>
       </div>
     </div>
     <div>
@@ -400,6 +452,7 @@ textarea{min-height:88px;resize:vertical}
         <h3>Akan Optik</h3>
         <p>Kayıhan, Atatürk Caddesi No:12<br>16230 Osmangazi / Bursa</p>
         <p><a href="tel:+902242211219">0224 221 12 19</a></p>
+        <p><a href="https://wa.me/905335927548?text=Merhaba%2C%20Akan%20Optik%E2%80%99e%20bir%20sorum%20var." target="_blank" rel="noopener">WhatsApp: 0533 592 75 48</a></p>
         <p><a href="https://www.google.com/maps/search/?api=1&amp;query=Akan+Optik+Atat%C3%BCrk+Caddesi+No:12+Kay%C4%B1han+Osmangazi+Bursa" target="_blank" rel="noopener">Yol tarifi al</a></p>
       </div>
       <div>
@@ -417,24 +470,29 @@ textarea{min-height:88px;resize:vertical}
       <div>
         <h3>Sayfalar</h3>
         <ul class="footnav">
-          <li><a href="randevu.html">Randevu</a></li>
-          <li><a href="recete.html">Reçetenizi anlayın</a></li>
-          <li><a href="cerceve-bulucu.html">Çerçeve bulucu</a></li>
-          <li><a href="cerceveler.html">Çerçeveler</a></li>
-          <li><a href="lensler.html">Kontakt lens stoğu</a></li>
-          <li><a href="onarim.html">Onarım</a></li>
-          <li><a href="sss.html">Sık sorulan sorular</a></li>
-          <li><a href="hakkimizda.html">Hakkımızda</a></li>
-          <li><a href="iletisim.html">İletişim ve konum</a></li>
+          <li><a href="/randevu">Randevu</a></li>
+          <li><a href="/recete">Reçetenizi anlayın</a></li>
+          <li><a href="/cerceve-bulucu">Çerçeve bulucu</a></li>
+          <li><a href="/cerceveler">Çerçeveler</a></li>
+          <li><a href="/lensler">Kontakt lens stoğu</a></li>
+          <li><a href="/onarim">Onarım</a></li>
+          <li><a href="/sss">Sık sorulan sorular</a></li>
+          <li><a href="/hakkimizda">Hakkımızda</a></li>
+          <li><a href="/iletisim">İletişim ve konum</a></li>
         </ul>
       </div>
     </div>
     <div class="legal">
-      <p style="max-width:80ch">Bu sitedeki formlar tarayıcınızda çalışır; girdiğiniz bilgiler sunucumuzda saklanmaz ve yalnızca sizin göndereceğiniz mesajın taslağını oluşturur. Reçete ve numara bilgileriniz yalnızca mağaza içindeki kayıt sisteminde, sır saklama yükümlülüğü altında tutulur ve tanıtım amacıyla kullanılmaz. Ayrıntılı aydınlatma metnimiz mağazamızda yazılı olarak bulunmaktadır.</p>
+      <p style="max-width:80ch">Sitedeki formlar bilgilerinizi saklamaz; yalnızca mesajınızı hazırlar ve WhatsApp’ta açar. WhatsApp mesajları Meta altyapısı üzerinden, yurt dışındaki sunucular aracılığıyla iletilir. Reçete ve numara bilgileriniz yalnızca mağaza içindeki kayıtta, sır saklama yükümlülüğü altında tutulur ve tanıtım amacıyla kullanılmaz. Aydınlatma metnimiz mağazada yazılı olarak bulunur.</p>
       <p style="margin-top:12px">Akan Optik &middot; Kayıhan, Atatürk Caddesi No:12, 16230 Osmangazi / Bursa &middot; <a href="tel:+902242211219">0224 221 12 19</a></p>
     </div>
   </div>
 </footer>
+<nav class="eylem" aria-label="Hızlı iletişim">
+  <a href="tel:+902242211219">Ara</a>
+  <a href="https://wa.me/905335927548?text=Merhaba%2C%20Akan%20Optik%E2%80%99e%20bir%20sorum%20var." target="_blank" rel="noopener" class="wa">WhatsApp</a>
+  <a href="https://www.google.com/maps/search/?api=1&amp;query=Akan+Optik+Atat%C3%BCrk+Caddesi+No:12+Kay%C4%B1han+Osmangazi+Bursa" target="_blank" rel="noopener">Yol tarifi</a>
+</nav>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script>
 /* =========================================================
@@ -524,43 +582,30 @@ function glassesSVG(shape){
 
 /* =========================================================
    STOK VERİSİ
-   Personel panelinden indirilen stok.json varsa oradan okunur.
-   Yoksa aşağıdaki örnek liste kullanılır.
+   Stok uygulamasından okunur. Ulaşılamazsa örnek ürün gösterilmez;
+   sayfa bunun yerine mağazaya veya WhatsApp'a yönlendirir.
    ========================================================= */
-let FRAMES=[
-  {kod:"AK-101",tip:"dikdortgen",malzeme:"Asetat",  renk:"Bağa deseni", kullanim:"Günlük",kime:"Unisex",adet:2,gorsel:""},
-  {kod:"AK-104",tip:"yuvarlak",  malzeme:"Metal",   renk:"Antik altın", kullanim:"Günlük",kime:"Unisex",adet:1,gorsel:""},
-  {kod:"AK-108",tip:"kelebek",   malzeme:"Asetat",  renk:"Füme",        kullanim:"Günlük",kime:"Kadın", adet:3,gorsel:""},
-  {kod:"AK-112",tip:"kare",      malzeme:"Asetat",  renk:"Mat siyah",   kullanim:"Ekran", kime:"Erkek", adet:2,gorsel:""},
-  {kod:"AK-117",tip:"aviator",   malzeme:"Metal",   renk:"Gümüş",       kullanim:"Güneş", kime:"Unisex",adet:1,gorsel:""},
-  {kod:"AK-121",tip:"panto",     malzeme:"Titanyum",renk:"Lacivert",    kullanim:"Günlük",kime:"Unisex",adet:0,gorsel:""},
-  {kod:"AK-126",tip:"oval",      malzeme:"Titanyum",renk:"Şampanya",    kullanim:"Okuma", kime:"Kadın", adet:2,gorsel:""},
-  {kod:"AK-130",tip:"dikdortgen",malzeme:"TR90",    renk:"Kiremit",     kullanim:"Çocuk", kime:"Çocuk", adet:4,gorsel:""}
-];
-let LENSES=[
-  {kod:"AO1150/00LF",ad:"Acuvue Oasys",marka:"Johnson & Johnson",urun:"Acuvue Oasys",tur:"İki haftalık",ozellik:"Küresel",paket:"6 adet",bc:"8.4 / 8.8",cap:"14.0",
-   araliklar:[{min:-12,max:-6.5,adim:0.5},{min:-6,max:-0.5,adim:0.25},{min:0.5,max:6,adim:0.25},{min:6.5,max:8,adim:0.5}],adet:3,not:""},
-  {kod:"BSP1700/00LF",ad:"Biofinity",marka:"CooperVision",urun:"Biofinity",tur:"Aylık",ozellik:"Küresel",paket:"6 adet",bc:"8.6",cap:"14.0",
-   araliklar:[{min:-12,max:-6.5,adim:0.5},{min:-6,max:6,adim:0.25},{min:6.5,max:8,adim:0.5}],adet:2,not:""},
-  {kod:"TOT2000/00LF",ad:"Total 30",marka:"Alcon",urun:"Total 30",tur:"Aylık",ozellik:"Küresel",paket:"6 adet",bc:"8.4",cap:"14.2",
-   araliklar:[{min:-12,max:-6.5,adim:0.5},{min:-6,max:-0.25,adim:0.25},{min:0.25,max:6,adim:0.25},{min:6.5,max:8,adim:0.5}],adet:0,not:""}
-];
+let FRAMES = [];
+let LENSES = [];
+let STOK_DURUM = "bekliyor";   // bekliyor | tamam | yok
 
 let stockLoaded = null;
 async function loadStock(){
   if(stockLoaded) return stockLoaded;
   stockLoaded = (async ()=>{
-    const kaynaklar = [CONFIG.stokUrl, "stok.json"].filter(Boolean);
+    const kaynaklar = [CONFIG.stokUrl, "/stok.json"].filter(Boolean);
     for(const url of kaynaklar){
       try{
         const r = await fetch(url, {cache:"no-store"});
         if(!r.ok) continue;
         const d = await r.json();
-        if(Array.isArray(d.cerceveler) && d.cerceveler.length) FRAMES = d.cerceveler;
-        if(Array.isArray(d.lensler)    && d.lensler.length)    LENSES = d.lensler;
+        if(Array.isArray(d.cerceveler)) FRAMES = d.cerceveler;
+        if(Array.isArray(d.lensler))    LENSES = d.lensler;
+        STOK_DURUM = "tamam";
         return;
       }catch(e){ /* sıradaki kaynağı dene */ }
     }
+    STOK_DURUM = "yok";
   })();
   return stockLoaded;
 }
@@ -568,16 +613,18 @@ async function loadStock(){
 /* ---------- randevu formu ---------- */
 if($("#ap_wa")){
   const text=()=>{
-    if(!v("#ap_name")||!v("#ap_phone")) return null;
-    const l=["Randevu talebi — Akan Optik","Ad: "+v("#ap_name"),"Telefon: "+v("#ap_phone"),
+    if(!v("#ap_name")) return null;
+    const l=["Merhaba, randevu almak istiyorum.","Ad: "+v("#ap_name"),
       "Tarih: "+(v("#ap_date")||"belirtilmedi"),"Saat: "+v("#ap_time"),"Konu: "+v("#ap_topic")];
     if(v("#ap_note")) l.push("Not: "+v("#ap_note"));
     if($("#ap_remind").checked) l.push("Kontrol hatırlatması almak istiyorum.");
     return l.join("\n");
   };
-  const guard=fn=>()=>{ const t=text(); if(!t){toast("Ad ve telefon alanlarını doldurun.");$("#ap_name").focus();return;} fn(t); };
+  const guard=fn=>()=>{ const t=text(); if(!t){toast("Adınızı yazın.");$("#ap_name").focus();return;} fn(t); };
   $("#ap_wa").addEventListener("click",guard(send));
-  $("#ap_copy").addEventListener("click",guard(copy));
+  const tarih=$("#ap_date");
+  if(tarih){ const b=new Date(); tarih.min=b.getFullYear()+"-"+String(b.getMonth()+1).padStart(2,"0")+"-"+String(b.getDate()).padStart(2,"0");
+    tarih.addEventListener("change",()=>{ if(tarih.value && new Date(tarih.value+"T12:00").getDay()===0){ toast("Pazar günü kapalıyız, başka bir gün seçin."); tarih.value=""; } }); }
 }
 
 /* ---------- reçete çözümleyici ---------- */
@@ -690,22 +737,30 @@ if($("#rx_go")){
 
 }
 
+/* ---------- stok boşken gösterilecek kutu ---------- */
+function bosStok(neyi){
+  const wa = CONFIG.whatsapp ? "https://wa.me/"+CONFIG.whatsapp+"?text="+encodeURIComponent("Merhaba, "+neyi+" hakkında bilgi almak istiyorum.") : "";
+  return `<div class="bosstok">
+    <h3>${STOK_DURUM==="yok" ? "Stok listesi şu an yüklenemedi" : "Liste yakında burada"}</h3>
+    <p>${neyi.charAt(0).toUpperCase()+neyi.slice(1)} mağazada sizi bekliyor. Aradığınız bir model veya numara varsa sorun, varsa ayırtalım.</p>
+    <div class="btnrow">${wa?`<a class="btn" href="${wa}" target="_blank" rel="noopener">WhatsApp’tan sorun</a>`:""}
+      <a class="btn ghost" href="tel:+902242211219">0224 221 12 19</a></div>
+  </div>`;
+}
+
 /* ---------- ayırtma mesajları ---------- */
 function reserveFrame(kod){
   const f=FRAMES.find(x=>x.kod===kod); if(!f) return;
-  const who=prompt("Adınız ve telefon numaranız:"); if(!who) return;
-  send(["Çerçeve ayırtma talebi — Akan Optik",
-    "Model: "+f.kod+" ("+f.malzeme+", "+f.renk+")",
-    "İleten: "+who,"İki gün ayrılmasını rica ediyorum."].join("\n"));
+  send(["Merhaba, sitenizde gördüğüm çerçeveyi iki gün ayırtmak istiyorum.",
+    "Model: "+f.kod+" ("+[f.malzeme,f.renk].filter(Boolean).join(", ")+")",
+    "Adım: "].join("\n"));
 }
 function reserveLens(kod){
   const l=LENSES.find(x=>x.kod===kod); if(!l) return;
-  const who=prompt("Adınız ve telefon numaranız:"); if(!who) return;
-  send(["Lens ayırtma talebi — Akan Optik",
-    "Ürün: "+(l.ad || ((l.marka||"")+" "+(l.urun||"")).trim() || l.kod)+" — "+l.tur+(l.paket?", "+l.paket:""),
-    "İleten: "+who,
+  send(["Merhaba, sitenizde gördüğüm lensi iki gün ayırtmak istiyorum.",
+    "Ürün: "+(l.ad || ((l.marka||"")+" "+(l.urun||"")).trim() || l.kod)+" ("+l.tur+")",
     "Numaramı mağazada reçetemle birlikte vereceğim.",
-    "İki gün ayrılmasını rica ediyorum."].join("\n"));
+    "Adım: "].join("\n"));
 }
 
 /* ---------- çerçeve kataloğu ---------- */
@@ -717,6 +772,7 @@ if($("#frames")){
     $$("#filters .chip").forEach(b=>b.addEventListener("click",()=>{active=b.dataset.f;drawFilters();drawFrames();}));
   }
   function drawFrames(){
+    if(!FRAMES.length){ $("#filters").innerHTML=""; $("#frames").className=""; $("#frames").innerHTML=bosStok("vitrindeki çerçeveler"); return; }
     const list=FRAMES.filter(f=>active==="Tümü"||f.kullanim===active);
     if(!list.length){ $("#frames").innerHTML='<p class="note">Bu başlıkta şu an ürün görünmüyor.</p>'; return; }
     $("#frames").innerHTML=list.map(f=>{
@@ -741,7 +797,7 @@ if($("#lenses")){
     if(Array.isArray(l.araliklar) && l.araliklar.length){
       const hepsi=l.araliklar; const mn=Math.min(...hepsi.map(r=>r.min)), mx=Math.max(...hepsi.map(r=>r.max));
       const detay=hepsi.map(r=>fmt(r.min)+" … "+fmt(r.max)+" ("+r.adim.toFixed(2)+")").join(" · ");
-      return "<b>"+fmt(mn)+" ile "+fmt(mx)+"</b><small>"+esc(detay)+"</small>";
+      return '<span title="'+esc(detay)+'">'+fmt(mn)+" ile "+fmt(mx)+"</span>";
     }
     return esc(l.aralik||"—");
   }
@@ -761,6 +817,7 @@ if($("#lenses")){
     $$("#lensFilters .chip").forEach(b=>b.addEventListener("click",()=>{turF=b.dataset.t;drawLensFilters();drawLenses();}));
   }
   function drawLenses(){
+    if(!LENSES.length){ const a=$(".lensAra"); if(a) a.style.display="none"; $("#lenses").innerHTML=bosStok("kontakt lensler"); return; }
     let liste=LENSES.filter(l=>turF==="Tümü"||l.tur===turF);
     if(sphF!==null) liste=liste.filter(l=>kapsiyorMu(l,sphF)!==false);
     if(!liste.length){
@@ -768,17 +825,14 @@ if($("#lenses")){
       return;
     }
     $("#lenses").innerHTML=`<table class="stoktab">
-      <thead><tr><th>Ürün</th><th>Değişim</th><th>Özellik</th><th>Paket</th><th>BC / Çap</th><th>Numara aralığı</th><th>Durum</th><th></th></tr></thead>
+      <thead><tr><th>Ürün</th><th>Değişim</th><th>Numara aralığı</th><th>Durum</th><th></th></tr></thead>
       <tbody>${liste.map(l=>{
         const varMi=Number(l.adet)>0;
         const ad=esc(l.ad || ((l.marka||"")+" "+(l.urun||"")).trim() || l.kod);
         return `<tr>
-          <td data-l="Ürün"><b>${ad}</b>${l.not&&!/katalogdan/i.test(l.not)?`<small>${esc(l.not)}</small>`:""}</td>
+          <td data-l="Ürün"><span class="urun"><b>${ad}</b>${l.ozellik&&l.ozellik!=="Küresel"?`<small>${esc(l.ozellik)}</small>`:""}</span></td>
           <td data-l="Değişim">${esc(l.tur)}</td>
-          <td data-l="Özellik">${esc(l.ozellik)}</td>
-          <td data-l="Paket">${esc(l.paket)}</td>
-          <td data-l="BC / Çap">${esc(l.bc||"—")} / ${esc(l.cap||"—")}</td>
-          <td data-l="Aralık" class="aralik">${aralikMetni(l)}</td>
+          <td data-l="Numara" class="aralik">${aralikMetni(l)}</td>
           <td data-l="Durum" class="${varMi?"ok":"no"}">${varMi?"Stokta":"Tükendi"}</td>
           <td>${varMi?`<button class="btn ghost small" data-lens="${esc(l.kod)}">Ayırt</button>`:`<span class="note">Sorabilirsiniz</span>`}</td>
         </tr>`;}).join("")}</tbody></table>`;
@@ -957,13 +1011,13 @@ if($("#quiz")){
           <dt>Malzeme</dt><dd>${mat.join(" veya ")}. ${notlar.filter(Boolean).slice(0,2).join(" ")}</dd>
           <dt>Cam</dt><dd>${camNot}</dd>
           ${ince?'<dt>Kalınlık</dt><dd>Küçük göz genişliği olan bir çerçeve, aynı numarada camın kenar kalınlığını azaltır. Biçim seçimi burada camdan daha etkilidir.</dd>':''}
-          ${stok.length?`<dt>Mağazada</dt><dd>Şu an bulunan yakın modeller: ${stok.map(x=>esc(x.kod)).join(", ")}. <a href="cerceveler.html">Çerçevelere bakın</a></dd>`:''}
+          ${stok.length?`<dt>Mağazada</dt><dd>Şu an bulunan yakın modeller: ${stok.map(x=>esc(x.kod)).join(", ")}. <a href="/cerceveler">Çerçevelere bakın</a></dd>`:''}
         </dl>
       </div>
       <p class="note" style="margin-top:20px">Bu öneri genel yüz oranlarına ve verdiğiniz yanıtlara dayanır. Aynı biçimdeki iki çerçeve, köprü genişliği ve sap boyu farklıysa yüzünüzde bambaşka durur; son kararı denedikten sonra verin.</p>
       <div class="btnrow">
         <button class="btn" id="qGonder">Sonucu WhatsApp ile gönder</button>
-        <a class="btn ghost" href="randevu.html">Randevu oluştur</a>
+        <a class="btn ghost" href="/randevu">Randevu oluştur</a>
         <button class="btn ghost" id="qReset">Baştan başla</button>
       </div>`);
 
@@ -979,15 +1033,22 @@ if($("#quiz")){
 /* ---------- onarım formu ---------- */
 if($("#rp_wa")){
   const text=()=>{
-    if(!v("#rp_name")||!v("#rp_phone")) return null;
-    const l=["Onarım talebi — Akan Optik","Ad: "+v("#rp_name"),"Telefon: "+v("#rp_phone"),"Sorun: "+v("#rp_kind")];
+    if(!v("#rp_name")) return null;
+    const l=["Merhaba, gözlüğüm için onarım sormak istiyorum.","Ad: "+v("#rp_name"),"Sorun: "+v("#rp_kind")];
     if(v("#rp_note")) l.push("Açıklama: "+v("#rp_note"));
     return l.join("\n");
   };
-  const guard=fn=>()=>{ const t=text(); if(!t){toast("Ad ve telefon alanlarını doldurun.");$("#rp_name").focus();return;} fn(t); };
+  const guard=fn=>()=>{ const t=text(); if(!t){toast("Adınızı yazın.");$("#rp_name").focus();return;} fn(t); };
   $("#rp_wa").addEventListener("click",guard(send));
-  $("#rp_copy").addEventListener("click",guard(copy));
 }
+
+/* ---------- mobil menü ---------- */
+(function(){
+  const b=$("#menuBtn"), n=$("#anaMenu"); if(!b||!n) return;
+  b.addEventListener("click",()=>{ const acik=b.getAttribute("aria-expanded")==="true";
+    b.setAttribute("aria-expanded", String(!acik)); document.body.classList.toggle("menuAcik", !acik); });
+  document.addEventListener("keydown",e=>{ if(e.key==="Escape"){ b.setAttribute("aria-expanded","false"); document.body.classList.remove("menuAcik"); } });
+})();
 
 </script>
 </body>

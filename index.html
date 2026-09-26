@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="utf-8">
-<script>document.documentElement.classList.add("js-odak");window.addEventListener("error",function(){document.documentElement.classList.remove("js-odak")});</script>
+<script>document.documentElement.classList.add("js-odak");setTimeout(function(){if(!window.__odak)document.documentElement.classList.remove("js-odak")},3000);</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Akan Optik — Setbaşı, Osmangazi Bursa</title>
 <meta name="description" content="Akan Optik, Setbaşı ana cadde üzerinde. Numaralı cam, kontakt lens, çerçeve seçimi, ölçüm ve onarım. Kayıhan, Atatürk Caddesi No:12, Osmangazi Bursa.">
@@ -618,6 +618,78 @@ h3{font-weight:650}
 #apptForm .grid3{grid-template-columns:1fr 1fr 1.3fr}
 @media(max-width:700px){#apptForm .grid3{grid-template-columns:1fr}}
 
+/* =====================================================================
+   SAHNE 2 — açıklamasız, daha büyük, tüm tarayıcılarda aynı
+   ===================================================================== */
+/* mercek ve net katman artık JS ile doğrudan konumlanır */
+.tablo-net{clip-path:circle(0px at 50% 50%);-webkit-clip-path:circle(0px at 50% 50%);transform-origin:50% 50%}
+.mercek{left:0;top:0;transform:none;opacity:0;transition:opacity .8s ease;will-change:transform}
+.tablo.hazir .mercek{opacity:1}
+.mercek::before{animation:don 10s linear infinite}
+@keyframes don{to{transform:rotate(1turn)}}
+.tablo-net span{text-shadow:-3px 0 rgba(94,224,214,.45),3px 0 rgba(163,147,255,.42)}
+.tablo-net{color:rgba(255,255,255,.82)}
+
+/* çerçeve çizimleri: pathLength yerine sabit uzunluk (Firefox dahil her yerde çalışır) */
+.bicimler svg *{stroke-dasharray:420;stroke-dashoffset:0}
+.js-odak .bicimler svg *{stroke-dashoffset:420;transition:stroke-dashoffset 1.6s cubic-bezier(.4,.1,.2,1)}
+.js-odak .bicimler.net svg *{stroke-dashoffset:0}
+
+/* sahne düzeni: ekranı dolduran, adı merkeze alan */
+.sahne{min-height:calc(100vh - 58px);min-height:calc(100svh - 58px);display:flex;flex-direction:column;padding-top:0}
+.sahne > .wrap{width:100%}
+.sahne-ic{flex:1;display:flex;flex-direction:column;justify-content:center;padding-top:64px;padding-bottom:28px}
+.sahne::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse 42% 55% at 76% 46%,rgba(94,224,214,.10),transparent 70%),
+             radial-gradient(ellipse 30% 40% at 88% 70%,rgba(163,147,255,.10),transparent 70%)}
+.tablo{--lr:150px}
+.tablo-kat .s1{font-size:184px}.tablo-kat .s2{font-size:118px}.tablo-kat .s3{font-size:82px}
+.tablo-kat .s4{font-size:57px}.tablo-kat .s5{font-size:42px}.tablo-kat .s6{font-size:31px}.tablo-kat .s7{font-size:23px}
+.sahne .yil{display:flex;align-items:center;gap:12px;font-size:14.5px;letter-spacing:.04em;margin-bottom:22px}
+.sahne .yil::before{content:"";width:28px;height:1.5px;background:var(--coat-a)}
+.marka span:first-child{font-size:clamp(88px,15.5vw,214px);letter-spacing:.01em}
+.marka span:last-child{font-size:clamp(32px,5.7vw,78px);letter-spacing:.36em;margin-top:.16em}
+.sahne .btnrow{margin-top:40px}
+.sahne .infostrip{margin-top:0}
+
+/* kaydırma işareti */
+.asagi{position:relative;z-index:3;display:block;width:26px;height:42px;margin:0 auto 22px;
+  border:1.5px solid rgba(255,255,255,.35);border-radius:14px}
+.asagi span{position:absolute;left:50%;top:9px;width:4px;height:8px;margin-left:-2px;border-radius:2px;background:var(--coat-a);
+  animation:asagi 1.8s ease-in-out infinite}
+@keyframes asagi{0%{transform:translateY(0);opacity:0}25%{opacity:1}70%{transform:translateY(14px);opacity:0}100%{opacity:0}}
+.asagi:hover{border-color:#fff}
+
+@media (prefers-reduced-motion:reduce){
+  .mercek::before,.asagi span{animation:none!important}
+  .js-odak .bicimler svg *{stroke-dashoffset:0;transition:none}
+}
+@media(max-width:860px){
+  .sahne{min-height:0}
+  .sahne-ic{padding-top:8px;padding-bottom:10px}
+  .tablo{--lr:62px}
+  .tablo-kat .s1{font-size:76px}.tablo-kat .s2{font-size:50px}.tablo-kat .s3{font-size:35px}
+  .tablo-kat .s4{font-size:26px}.tablo-kat .s5{font-size:20px}.tablo-kat .s6{font-size:15px}.tablo-kat .s7{font-size:12px}
+  .tablo-net span{text-shadow:-2px 0 rgba(94,224,214,.45),2px 0 rgba(163,147,255,.42)}
+  .marka span:first-child{font-size:clamp(84px,24vw,150px)}
+  .marka span:last-child{font-size:clamp(28px,8.4vw,50px)}
+  .sahne .btnrow{margin-top:28px}
+  .asagi{display:none}
+  .sahne .infostrip{margin-top:30px}
+}
+.otuz{font-size:clamp(44px,7.6vw,100px);overflow-wrap:break-word}
+.insanlar > *{min-width:0}
+@media(max-width:600px){.otuz{font-size:11.5vw}}
+/* ince ayar: ad ile mercek çakışmasın, başlık kelime ortasından bölünmesin */
+@media(min-width:861px){
+  .tablo-kat{width:50%}
+  .marka span:first-child{font-size:clamp(88px,13.2vw,184px)}
+  .sahne::after{background:linear-gradient(90deg,rgba(10,22,40,.96) 0%,rgba(10,22,40,.7) 42%,rgba(10,22,40,0) 60%)}
+}
+.otuz{font-size:clamp(40px,5.4vw,74px);overflow-wrap:normal}
+@media(max-width:600px){.otuz{font-size:11vw}}
+.kisiler{grid-template-columns:1fr}
+
 </style>
 <link rel="icon" href="/favicon.ico" sizes="32x32">
 <link rel="icon" href="/favicon-32.png" type="image/png">
@@ -659,15 +731,15 @@ h3{font-weight:650}
     <div class="mercek" id="mercek"></div>
   </div>
   <div class="wrap sahne-ic">
-    <p class="yil">Otuz yılı aşkın süredir Setbaşı’nda</p>
+    <p class="yil">Setbaşı · Atatürk Caddesi</p>
     <h1 class="marka"><span>Akan</span><span>Optik</span></h1>
-    <p class="sahne-alt">Atatürk Caddesi üzerinde. Çerçeve seçiminden numaralı camın hazırlanmasına kadar her adım aynı ziyarette, yerinde tamamlanır.</p>
     <div class="btnrow">
       <a class="btn acik" href="https://wa.me/905335927548?text=Merhaba%2C%20Akan%20Optik%E2%80%99e%20bir%20sorum%20var." target="_blank" rel="noopener">WhatsApp’tan yazın</a>
       <a class="btn cizgi" href="/randevu">Randevu oluştur</a>
       <a class="btn cizgi" href="https://www.google.com/maps/search/?api=1&amp;query=Akan+Optik+Atat%C3%BCrk+Caddesi+No:12+Kay%C4%B1han+Osmangazi+Bursa" target="_blank" rel="noopener">Yol tarifi al</a>
     </div>
   </div>
+  <a class="asagi" href="#magaza" aria-label="Aşağı kaydırın"><span></span></a>
   <div class="wrap">
     <div class="infostrip">
       <div><h4>Adres</h4><p>Kayıhan, Atatürk Caddesi No:12<br>16230 Osmangazi / Bursa</p></div>
@@ -677,7 +749,7 @@ h3{font-weight:650}
   </div>
 </section>
 
-<section class="block">
+<section class="block" id="magaza">
   <div class="wrap">
     <div class="bolum-bas" data-odak>
       <h2>Mağazada</h2>
@@ -697,7 +769,7 @@ h3{font-weight:650}
 </section>
 
 <section class="kayan" aria-label="Çalıştığımız markalar">
-  <div class="kayan-ic"><div class="kayan-grup"><span>Ray-Ban</span><i></i><span>Serengeti</span><i></i><span>Oxibis</span><i></i><span>Optiswiss</span><i></i><span>ZEISS</span><i></i><span>Seiko</span><i></i><span>Aquaoasis</span><i></i></div><div class="kayan-grup" aria-hidden="true"><span>Ray-Ban</span><i></i><span>Serengeti</span><i></i><span>Oxibis</span><i></i><span>Optiswiss</span><i></i><span>ZEISS</span><i></i><span>Seiko</span><i></i><span>Aquaoasis</span><i></i></div></div>
+  <div class="kayan-ic"><div class="kayan-grup"><span>Ray-Ban</span><i></i><span>Serengeti</span><i></i><span>Oxibis</span><i></i><span>Optiswiss</span><i></i><span>ZEISS</span><i></i><span>Seiko</span><i></i><span>Acuvue Oasys</span><i></i></div><div class="kayan-grup" aria-hidden="true"><span>Ray-Ban</span><i></i><span>Serengeti</span><i></i><span>Oxibis</span><i></i><span>Optiswiss</span><i></i><span>ZEISS</span><i></i><span>Seiko</span><i></i><span>Acuvue Oasys</span><i></i></div></div>
 </section>
 
 <section class="block">
@@ -708,14 +780,14 @@ h3{font-weight:650}
       <div class="btnrow"><a class="btn" href="/cerceve-bulucu">Çerçeve bulucuyu başlat</a><a class="btn ghost" href="/cerceveler">Vitrine bak</a></div>
     </div>
     <div class="bicimler" id="bicimler">
-      <a href="/cerceve-bulucu"><svg viewBox="0 0 200 100" aria-hidden="true"><rect pathLength="1" x="25" y="33" width="64" height="34" rx="3"/><rect pathLength="1" x="111" y="33" width="64" height="34" rx="3"/><path pathLength="1" d="M89 46 q 11 -7 22 0"/><path pathLength="1" d="M25 44 l -16 -5"/><path pathLength="1" d="M175 44 l 16 -5"/></svg><small>Dikdörtgen</small></a>
-      <a href="/cerceve-bulucu"><svg viewBox="0 0 200 100" aria-hidden="true"><rect pathLength="1" x="29" y="27" width="60" height="46" rx="5"/><rect pathLength="1" x="111" y="27" width="60" height="46" rx="5"/><path pathLength="1" d="M89 46 q 11 -7 22 0"/><path pathLength="1" d="M29 44 l -16 -5"/><path pathLength="1" d="M171 44 l 16 -5"/></svg><small>Kare</small></a>
-      <a href="/cerceve-bulucu"><svg viewBox="0 0 200 100" aria-hidden="true"><rect pathLength="1" x="33" y="22" width="56" height="56" rx="30"/><rect pathLength="1" x="111" y="22" width="56" height="56" rx="30"/><path pathLength="1" d="M89 46 q 11 -7 22 0"/><path pathLength="1" d="M33 44 l -16 -5"/><path pathLength="1" d="M167 44 l 16 -5"/></svg><small>Yuvarlak</small></a>
-      <a href="/cerceve-bulucu"><svg viewBox="0 0 200 100" aria-hidden="true"><rect pathLength="1" x="23" y="30" width="66" height="40" rx="26"/><rect pathLength="1" x="111" y="30" width="66" height="40" rx="26"/><path pathLength="1" d="M89 46 q 11 -7 22 0"/><path pathLength="1" d="M23 44 l -16 -5"/><path pathLength="1" d="M177 44 l 16 -5"/></svg><small>Oval</small></a>
-      <a href="/cerceve-bulucu"><svg viewBox="0 0 200 100" aria-hidden="true"><rect pathLength="1" x="31" y="25" width="58" height="50" rx="22"/><rect pathLength="1" x="111" y="25" width="58" height="50" rx="22"/><path pathLength="1" d="M89 46 q 11 -7 22 0"/><path pathLength="1" d="M31 44 l -16 -5"/><path pathLength="1" d="M169 44 l 16 -5"/></svg><small>Panto</small></a>
-      <a href="/cerceve-bulucu"><svg viewBox="0 0 200 100" aria-hidden="true"><rect pathLength="1" x="23" y="31" width="66" height="38" rx="10"/><rect pathLength="1" x="111" y="31" width="66" height="38" rx="10"/><path pathLength="1" d="M89 46 q 11 -7 22 0"/><path pathLength="1" d="M23 44 l -16 -5"/><path pathLength="1" d="M177 44 l 16 -5"/></svg><small>Kelebek</small></a>
-      <a href="/cerceve-bulucu"><svg viewBox="0 0 200 100" aria-hidden="true"><rect pathLength="1" x="25" y="27" width="64" height="46" rx="18"/><rect pathLength="1" x="111" y="27" width="64" height="46" rx="18"/><path pathLength="1" d="M89 46 q 11 -7 22 0"/><path pathLength="1" d="M25 44 l -16 -5"/><path pathLength="1" d="M175 44 l 16 -5"/></svg><small>Aviator</small></a>
-      <a href="/cerceve-bulucu"><svg viewBox="0 0 200 100" aria-hidden="true"><circle pathLength="1" cx="100" cy="50" r="30"/><path pathLength="1" d="M100 35v30M85 50h30"/></svg><small>Size hangisi?</small></a>
+      <a href="/cerceve-bulucu"><svg viewBox="0 0 200 100" aria-hidden="true"><rect x="25" y="33" width="64" height="34" rx="3"/><rect x="111" y="33" width="64" height="34" rx="3"/><path d="M89 46 q 11 -7 22 0"/><path d="M25 44 l -16 -5"/><path d="M175 44 l 16 -5"/></svg><small>Dikdörtgen</small></a>
+      <a href="/cerceve-bulucu"><svg viewBox="0 0 200 100" aria-hidden="true"><rect x="29" y="27" width="60" height="46" rx="5"/><rect x="111" y="27" width="60" height="46" rx="5"/><path d="M89 46 q 11 -7 22 0"/><path d="M29 44 l -16 -5"/><path d="M171 44 l 16 -5"/></svg><small>Kare</small></a>
+      <a href="/cerceve-bulucu"><svg viewBox="0 0 200 100" aria-hidden="true"><rect x="33" y="22" width="56" height="56" rx="30"/><rect x="111" y="22" width="56" height="56" rx="30"/><path d="M89 46 q 11 -7 22 0"/><path d="M33 44 l -16 -5"/><path d="M167 44 l 16 -5"/></svg><small>Yuvarlak</small></a>
+      <a href="/cerceve-bulucu"><svg viewBox="0 0 200 100" aria-hidden="true"><rect x="23" y="30" width="66" height="40" rx="26"/><rect x="111" y="30" width="66" height="40" rx="26"/><path d="M89 46 q 11 -7 22 0"/><path d="M23 44 l -16 -5"/><path d="M177 44 l 16 -5"/></svg><small>Oval</small></a>
+      <a href="/cerceve-bulucu"><svg viewBox="0 0 200 100" aria-hidden="true"><rect x="31" y="25" width="58" height="50" rx="22"/><rect x="111" y="25" width="58" height="50" rx="22"/><path d="M89 46 q 11 -7 22 0"/><path d="M31 44 l -16 -5"/><path d="M169 44 l 16 -5"/></svg><small>Panto</small></a>
+      <a href="/cerceve-bulucu"><svg viewBox="0 0 200 100" aria-hidden="true"><rect x="23" y="31" width="66" height="38" rx="10"/><rect x="111" y="31" width="66" height="38" rx="10"/><path d="M89 46 q 11 -7 22 0"/><path d="M23 44 l -16 -5"/><path d="M177 44 l 16 -5"/></svg><small>Kelebek</small></a>
+      <a href="/cerceve-bulucu"><svg viewBox="0 0 200 100" aria-hidden="true"><rect x="25" y="27" width="64" height="46" rx="18"/><rect x="111" y="27" width="64" height="46" rx="18"/><path d="M89 46 q 11 -7 22 0"/><path d="M25 44 l -16 -5"/><path d="M175 44 l 16 -5"/></svg><small>Aviator</small></a>
+      <a href="/cerceve-bulucu"><svg viewBox="0 0 200 100" aria-hidden="true"><circle cx="100" cy="50" r="30"/><path d="M100 35v30M85 50h30"/></svg><small>Size hangisi?</small></a>
     </div>
   </div>
 </section>
@@ -766,8 +838,8 @@ h3{font-weight:650}
   <div class="wrap">
     <div class="insanlar">
       <div data-odak>
-        <p class="otuz">Otuz yıl<small>Setbaşı’nda, aynı caddede</small></p>
-        <p>Akan Optik otuz yılı aşkın süredir Atatürk Caddesi üzerinde. Birçok müşterimiz yıllar önce ilk gözlüğünü burada aldı; bugün çocuğunun gözlüğü için geliyor. Reçete okunur, çerçeve yüzde denenir, cam kesilir, ayar yapılır. Hepsi burada.</p>
+        <p class="otuz">Tezgahın<br>arkasında<small>Mustafa ve Yeliz Eyüpoğlu, optisyen</small></p>
+        <p>Reçete okunur, çerçeve yüzde denenir, ölçü alınır, cam kesilir, ayar yapılır. Gözlüğünüzü hazırlayan ve ayarını yapan kişi aynıdır; bir sorun olduğunda kimi bulacağınızı bilirsiniz.</p>
         <div class="btnrow"><a class="btn ghost" href="/hakkimizda">Hakkımızda</a></div>
       </div>
       <div class="kisiler" data-odak>
@@ -1392,6 +1464,7 @@ if($("#rp_wa")){
    NETLEŞME: kaydırınca odaklanma, sahnedeki mercek, numara sürgüsü
    ===================================================================== */
 (function(){
+  window.__odak = true;
   const kok = document.documentElement;
   const azHareket = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -1407,43 +1480,68 @@ if($("#rp_wa")){
     hedefler.forEach(e=>io.observe(e));
   }
 
-  /* ---- sahne merceği ---- */
+  /* ---- sahne merceği ----
+     Konumlar CSS değişkeniyle değil doğrudan stil olarak yazılır (clip-path, transform):
+     tüm tarayıcılarda aynı davranır. */
   const tablo = $("#tablo"), sahne = $("#sahne");
   if(tablo && sahne){
-    const kat = tablo.querySelector(".tablo-bulanik");   /* dönüşümsüz katman: ölçüler doğru çıkar */
-    let hx=0, hy=0, x=0, y=0, elle=false, sonElle=0, gorunur=true, t0=performance.now(), ilk=true;
+    const bul = tablo.querySelector(".tablo-bulanik");   /* dönüşümsüz katman: ölçü buradan alınır */
+    const net = tablo.querySelector(".tablo-net");
+    const mercek = $("#mercek");
+    let hx=0, hy=0, x=0, y=0, elle=false, sonElle=0, gorunur=true, ilk=true, calisiyor=false;
+    const t0 = performance.now();
     const ince = window.matchMedia("(pointer: fine)").matches;
+    let olc = null;
 
-    function alan(){ const a=tablo.getBoundingClientRect(), k=kat.getBoundingClientRect();
-      return {a, k, cx:k.left-a.left+k.width/2, cy:k.top-a.top+k.height/2, w:k.width, h:k.height}; }
+    function olcu(){
+      const a=tablo.getBoundingClientRect(), k=bul.getBoundingClientRect();
+      const r=parseFloat(getComputedStyle(tablo).getPropertyValue("--lr")) || 120;
+      olc = {ax:a.left, ay:a.top, kx:k.left-a.left, ky:k.top-a.top, w:k.width, h:k.height,
+             cx:k.left-a.left+k.width/2, cy:k.top-a.top+k.height/2, r:r, D:r*2*1.16};
+    }
     function yerlestir(px,py){
-      const b=alan();
-      tablo.style.setProperty("--mx", px+"px"); tablo.style.setProperty("--my", py+"px");
-      tablo.style.setProperty("--lx", (px-(b.k.left-b.a.left))+"px"); tablo.style.setProperty("--ly", (py-(b.k.top-b.a.top))+"px");
+      if(!olc) olcu();
+      const lx=px-olc.kx, ly=py-olc.ky;
+      const c="circle("+olc.r+"px at "+lx.toFixed(1)+"px "+ly.toFixed(1)+"px)";
+      net.style.clipPath=c; net.style.webkitClipPath=c;
+      net.style.transformOrigin=lx.toFixed(1)+"px "+ly.toFixed(1)+"px";
+      mercek.style.width=mercek.style.height=olc.D+"px";
+      mercek.style.transform="translate("+(px-olc.D/2).toFixed(1)+"px,"+(py-olc.D/2).toFixed(1)+"px)";
+      if(!tablo.classList.contains("hazir")) tablo.classList.add("hazir");
     }
     function otomatik(t){
-      const b=alan(), s=(t-t0)/1000;
-      return [ b.cx + Math.sin(s*0.42)*b.w*0.17, b.cy - b.h*0.06 + Math.sin(s*0.63+1.1)*b.h*0.24 ];
+      const s=(t-t0)/1000;
+      return [ olc.cx + Math.sin(s*0.42)*olc.w*0.17, olc.cy - olc.h*0.06 + Math.sin(s*0.63+1.1)*olc.h*0.24 ];
     }
-    if(azHareket){ const b=alan(); yerlestir(b.cx, b.cy*0.8); }
+    function dongu(){
+      if(!gorunur){ calisiyor=false; return; }
+      const t=performance.now();
+      if(elle && t-sonElle>2600 && !ince) elle=false;
+      const hedef = elle ? [hx,hy] : otomatik(t);
+      if(ilk){ x=hedef[0]; y=hedef[1]; ilk=false; }
+      const k = elle ? 0.16 : 0.05;
+      x += (hedef[0]-x)*k; y += (hedef[1]-y)*k;
+      yerlestir(x,y);
+      requestAnimationFrame(dongu);
+    }
+    function baslat(){ if(!calisiyor){ calisiyor=true; requestAnimationFrame(dongu); } }
+
+    olcu();
+    window.addEventListener("resize", ()=>{ olcu(); if(azHareket) yerlestir(olc.cx, olc.cy-olc.h*0.1); });
+    if(document.fonts && document.fonts.ready) document.fonts.ready.then(olcu);
+
+    if(azHareket){ yerlestir(olc.cx, olc.cy-olc.h*0.1); }
     else {
       sahne.addEventListener("pointermove", e=>{
         if(e.pointerType==="mouse" && !ince) return;
-        const a=tablo.getBoundingClientRect(); hx=e.clientX-a.left; hy=e.clientY-a.top; elle=true; sonElle=performance.now();
+        const a=tablo.getBoundingClientRect(); hx=e.clientX-a.left; hy=e.clientY-a.top;
+        elle=true; sonElle=performance.now();
       });
       sahne.addEventListener("pointerleave", ()=>{ elle=false; });
-      new IntersectionObserver(g=>{ gorunur=g[0].isIntersecting; if(gorunur) requestAnimationFrame(dongu); }).observe(sahne);
-      function dongu(t){
-        if(!gorunur) return;
-        if(elle && t-sonElle>2600 && !ince) elle=false;
-        const [ox,oy] = elle ? [hx,hy] : otomatik(t);
-        if(ilk){ x=ox; y=oy; ilk=false; }
-        const k = elle ? 0.16 : 0.05;
-        x += (ox-x)*k; y += (oy-y)*k;
-        yerlestir(x,y);
-        requestAnimationFrame(dongu);
+      if("IntersectionObserver" in window){
+        new IntersectionObserver(g=>{ gorunur=g[g.length-1].isIntersecting; if(gorunur) baslat(); }).observe(sahne);
       }
-      requestAnimationFrame(dongu);
+      baslat();
     }
   }
 

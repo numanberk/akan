@@ -12,7 +12,7 @@
 <meta property="og:locale" content="tr_TR">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Cormorant+Garamond:wght@500;600&display=swap" rel="stylesheet">
 <style>
 /* =========================================================
    Akan Optik — ortak stil
@@ -778,6 +778,32 @@ a.arac:hover .ok::after,.ok:hover::after{transform:translateX(4px)}
 }
 @media(max-width:560px){.liste{grid-template-columns:1fr}.liste li{padding:18px 0 20px}}
 
+/* ---------- açılış: yalnızca ad, zarif serif ---------- */
+.marka{font-family:"Cormorant Garamond","Cormorant",Garamond,"Times New Roman",serif;font-stretch:normal;font-weight:500;line-height:.9;letter-spacing:0}
+.marka span:first-child{font-size:clamp(96px,14vw,210px);letter-spacing:.01em;font-weight:500}
+.marka span:last-child{font-size:clamp(20px,2.3vw,32px);text-transform:uppercase;letter-spacing:.62em;color:#AEBBCC;font-weight:500;margin-top:.9em;padding-left:.2em}
+.sahne-ic{padding-top:40px;padding-bottom:40px}
+@keyframes netlesSerif{from{filter:blur(16px);opacity:0}to{filter:blur(0);opacity:1}}
+.js-odak .marka span:first-child{animation:netlesSerif 1.4s cubic-bezier(.2,.7,.2,1) both}
+.js-odak .marka span:last-child{animation:netlesSerif 1.4s .25s cubic-bezier(.2,.7,.2,1) both}
+
+/* ---------- çerçeve bulucu satırı ---------- */
+.bulucu{display:grid;grid-template-columns:1.1fr .9fr;gap:60px;align-items:center;text-decoration:none;color:var(--ink);
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:70px 0}
+.bulucu h2{font-size:clamp(30px,4vw,46px);margin:0 0 16px}
+.bulucu p:not(.etiket){color:var(--muted);max-width:44ch;margin:0 0 28px}
+.bulucu .bicimler{display:block}
+.bulucu .bicimler svg{width:100%;max-width:420px;height:auto;margin-left:auto}
+.bulucu:hover .ok::after{transform:translateX(4px)}
+@media(max-width:860px){
+  .bulucu{grid-template-columns:1fr;gap:34px;padding:50px 0}
+  .bulucu .bicimler{order:-1}
+  .bulucu .bicimler svg{max-width:280px;margin:0}
+  .marka span:first-child{font-size:clamp(84px,26vw,150px)}
+  .marka span:last-child{font-size:clamp(16px,4.6vw,22px)}
+  .sahne-ic{padding-top:10px;padding-bottom:56px}
+}
+
 </style>
 <link rel="icon" href="/favicon.ico" sizes="32x32">
 <link rel="icon" href="/favicon-32.png" type="image/png">
@@ -819,20 +845,7 @@ a.arac:hover .ok::after,.ok:hover::after{transform:translateX(4px)}
     <div class="mercek" id="mercek"></div>
   </div>
   <div class="wrap sahne-ic">
-    <p class="yil">Optisyen · Setbaşı, Bursa</p>
     <h1 class="marka"><span>Akan</span><span>Optik</span></h1>
-    <p class="sahne-alt">Numaralı cam, çerçeve, kontakt lens ve onarım. Reçeteden teslime her şey aynı tezgahta.</p>
-    <div class="btnrow">
-      <a class="btn acik" href="/randevu">Randevu oluştur</a>
-      <a class="btn cizgi" href="https://wa.me/905335927548?text=Merhaba%2C%20Akan%20Optik%E2%80%99e%20bir%20sorum%20var." target="_blank" rel="noopener">WhatsApp’tan yazın</a>
-    </div>
-  </div>
-  <div class="wrap">
-    <ul class="kunye">
-      <li><a href="https://www.google.com/maps/search/?api=1&amp;query=Akan+Optik+Atat%C3%BCrk+Caddesi+No:12+Kay%C4%B1han+Osmangazi+Bursa" target="_blank" rel="noopener">Atatürk Caddesi No:12, Osmangazi</a></li>
-      <li><a href="tel:+902242211219">0224 221 12 19</a></li>
-      <li id="openState">Pazartesi – Cumartesi 09:00 – 18:30</li>
-    </ul>
   </div>
 </section>
 
@@ -858,27 +871,15 @@ a.arac:hover .ok::after,.ok:hover::after{transform:translateX(4px)}
 
 <section class="blok ince-ust">
   <div class="wrap">
-    <div class="blok-bas" data-odak>
-      <p class="etiket">Gelmeden önce</p>
-      <h2>İki kısa araç</h2>
-    </div>
-    <div class="araclar">
-      <a class="arac" href="/cerceve-bulucu" data-odak>
-        <div class="bicimler" id="bicimler"><svg viewBox="0 0 200 100" aria-hidden="true"><rect x="25" y="27" width="64" height="46" rx="18"/><rect x="111" y="27" width="64" height="46" rx="18"/><path d="M89 46 q 11 -7 22 0"/><path d="M25 44 l -16 -5"/><path d="M175 44 l 16 -5"/></svg></div>
-        <h3>Size hangi çerçeve yakışır?</h3>
+    <a class="bulucu" href="/cerceve-bulucu" data-odak>
+      <div>
+        <p class="etiket">Gelmeden önce</p>
+        <h2>Size hangi çerçeve yakışır?</h2>
         <p>Yüz hatlarınız ve kullanımınız hakkında yedi kısa soru. Sonunda denemeye başlayacağınız üç biçim çıkar. Fotoğraf istemiyoruz.</p>
         <span class="ok">Çerçeve bulucuyu başlat</span>
-      </a>
-      <div class="arac gorus" data-odak>
-        <div class="gorus-tablo" id="gorusTablo" aria-hidden="true">
-          <span class="g1">E</span><span class="g2">F P</span><span class="g3">T O Z</span><span class="g4">L P E D</span>
-        </div>
-        <label for="gorusSurgu">Numaranız gözlüksüz nasıl görünür? <b id="gorusDeger">-2.00</b></label>
-        <input type="range" id="gorusSurgu" min="-6" max="4" step="0.25" value="-2">
-        <p class="aciklama" id="gorusAciklama"></p>
-        <a class="ok" href="/recete">Reçetenizi okuyun</a>
       </div>
-    </div>
+      <div class="bicimler" id="bicimler"><svg viewBox="0 0 200 100" aria-hidden="true"><rect x="25" y="27" width="64" height="46" rx="18"/><rect x="111" y="27" width="64" height="46" rx="18"/><path d="M89 46 q 11 -7 22 0"/><path d="M25 44 l -16 -5"/><path d="M175 44 l 16 -5"/></svg></div>
+    </a>
   </div>
 </section>
 
